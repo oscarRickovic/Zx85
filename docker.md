@@ -1,6 +1,9 @@
 ## How to use the database mysql ##
 
-# before start change the docker compose mount file to user specific file
+# before start :
+
+decompress cloud_volume
+Change the volume path to be your volume path in docker-compose.yml
 
 # run the compose file #
 1. docker compose up -d
