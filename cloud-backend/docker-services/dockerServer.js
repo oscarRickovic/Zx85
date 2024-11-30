@@ -1,29 +1,30 @@
 const Docker = require('dockerode');
 const docker = new Docker();
 
-// Function to create a container with specified resource limits
+// input : name of container
+// output : none, create container with given name.
+// Doesn't have any exception handler
 async function createUserContainer(containerName) {
   try {
     const memoryInBytes = 536870912; // 512MB in bytes
-    const cpuShares = 1024; // CPU shares (relative weight for CPU usage, default is 1024)
-
+    const cpuShares = 1024;
     const container = await docker.createContainer({
-      Image: 'ubuntu:latest', // You can use the latest Ubuntu image
+      Image: 'ubuntu:latest',
       name: containerName,
       HostConfig: {
-        Memory: memoryInBytes, // Pass the memory in bytes
-        CpuShares: cpuShares, // Set CPU shares if needed
+        Memory: memoryInBytes,
+        CpuShares: cpuShares,
       },
-      Tty: true, // Enable pseudo-TTY for terminal
-      OpenStdin: true, // Enable interactive mode
+      Tty: true,
+      OpenStdin: true,
     });
 
-    await container.start(); // Start the container
+    await container.start();
     console.log(`Container ${containerName} created and started successfully`);
   } catch (error) {
     console.error(`Error creating container: ${error}`);
   }
 }
 
-// Example usage
+// test the function
 createUserContainer('hakimmovic');
