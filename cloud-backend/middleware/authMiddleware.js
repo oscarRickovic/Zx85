@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'; 
+const JWT_SECRET = process.env.JWT_SECRET; 
 
 const authMiddleware = (req, res, next) => {
-  const token = req.header('Authorization').split(' ')[1];
+  const token = req.header('Authorization');
   if (!token) return res.status(401).json({ error: 'Access denied' });
 
   try {
