@@ -1,12 +1,11 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const sequelize = require('./config/db'); // MySQL connection
 const authRoutes = require('./routes/auth');
 
-require('dotenv').config(); // Load environment variables
+require('dotenv').config();
 
 const app = express();
-app.use(bodyParser.json());
+app.use(express.json()); // Use built-in Express JSON parser
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -15,5 +14,5 @@ app.use('/api/auth', authRoutes);
 sequelize.sync().then(() => console.log('Database synced'));
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
