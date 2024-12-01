@@ -1,0 +1,10 @@
+/* Black horizontal line near the bottom */
+.horizontalLineError {
+    position: absolute;
+    top: 10%; /* 10% from the top */
+    left: 0; /* Start at the left edge */
+    width: 100%; /* Full width */
+    height: 10px; /* Thickness of the line */
+    background-color: rgb(221, 136, 136);
+}
+
