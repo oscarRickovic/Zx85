@@ -1,37 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import "../ComponentsCss/Sign.css"
-import User from '../../Classes/Entities/User'
-import UserService from '../../Classes/Services/UserService'
-import { UserServiceEnum } from '../../Classes/Enums/UserServiceEnum'
+import "../ComponentsCss/Login.css"
+import LoginUserService from '../../Classes/Services/LoginUserService'
+import { LoginUserServiceEnum } from '../../Classes/Enums/LoginUserServiceEnums'
+import LoginUser from '../../Classes/Entities/LoginUser'
 
-const Sign = (props) => {
+const Login = (props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [repeatedPassword, setRepeatedPassword] = useState('');
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
-    const [repeatedPasswordError, setRepeatedPasswordError] = useState('');
     const [errorMessage, setErrorMessage] = useState(''); // State for error message
     const navigate = useNavigate()
     
     const errorsPresentations = {
-        [UserServiceEnum.EMAIL_ERROR]: setEmailError,
-        [UserServiceEnum.PASSWOR_ERROR]: setPasswordError,
-        [UserServiceEnum.REPEATED_PASSWORD_ERROR]: setRepeatedPasswordError
+        [LoginUserServiceEnum.EMAIL_ERROR]: setEmailError,
+        [LoginUserServiceEnum.PASSWORD_ERROR]: setPasswordError,
     };
 
     const setAllErrorsEmpty = () => {
         setEmailError('');
         setPasswordError('');
-        setRepeatedPasswordError('');
     }
     
     const onButtonClick = () => {
         setAllErrorsEmpty()
-        let user = new User(email, password, repeatedPassword);
-        let checkUserResult = UserService.checkUserData(user);
-        if (checkUserResult !== UserServiceEnum.OK) {
+        let user = new LoginUser(email, password);
+        let checkUserResult = LoginUserService.checkLoginUserData(user);
+        if (checkUserResult !== LoginUserServiceEnum.OK) {
             // Set the error message
             setErrorMessage(checkUserResult);
             if (errorsPresentations[checkUserResult]) {
@@ -91,26 +87,15 @@ const Sign = (props) => {
         />
         </div>
         
-        <br/>
-        <div className={'inputContainer'}>
-        <input
-            type='text'
-            value={repeatedPassword}
-            placeholder="Reenter password.."
-            onChange={(ev) => setRepeatedPassword(ev.target.value)}
-            className={'inputBox'}
-        />
-        </div>
-        
         <br />
         
         <div className={'inputContainer'}>
-        <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Sign'} />
+        <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Login'} />
         </div>
         
-        <p className = {"changePage"} onClick={ () => {navigate("/login")}}>Already have Account</p>
+        <p className = {"changePage"} onClick={ () => {navigate("/")}}>Don't have Account</p>
     </div>
     )
 }
 
-export default Sign
+export default Login
