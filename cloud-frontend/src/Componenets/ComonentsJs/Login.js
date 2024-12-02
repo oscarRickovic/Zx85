@@ -37,9 +37,27 @@ const Login = (props) => {
                 console.error('Unknown error type:', checkUserResult);
             }
         } else {
-            const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-            alert(response.data.message);
-            navigate(`/home`);
+            try {
+                const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+                
+                // If login is successful
+                alert(response.data.message);
+            
+                // Store the token in localStorage for future requests
+                localStorage.setItem('authToken', response.data.token);
+
+                // Redirect to the home page
+                navigate('/home');
+            } catch (error) {
+                // Handle any error response from the backend
+                if (error.response) {
+                    console.error(error.response.data.error);
+                    alert(error.response.data.error || 'An error occurred during login');
+                } else {
+                    console.error(error);
+                    alert('An error occurred while trying to log in');
+                }
+            }
         }
     };
 

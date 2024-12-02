@@ -17,7 +17,7 @@ router.post('/login', loginUser);
 router.post('/verify-code', verifyCode);
 
 // Dashboard route with authMiddleware to ensure JWT token is verified
-router.get('/dashboard', authMiddleware, (req, res) => {
+router.get('/home', authMiddleware, (req, res) => {
   res.json({ message: `Welcome, user ${req.user.id}` });
 });
 

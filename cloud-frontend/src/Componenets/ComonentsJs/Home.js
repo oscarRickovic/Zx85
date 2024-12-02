@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { FileManager } from "@cubone/react-file-manager";
 import "@cubone/react-file-manager/dist/style.css";
 import "../ComponentsCss/Home.css";
 import Terminal from "./Terminal";
+import axios from "axios";
 
 function Home() {
   const [files, setFiles] = useState([
@@ -34,6 +36,40 @@ function Home() {
       },
   ]);
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("Home component RENDER....")
+    const fetchDashboardData = async () => {
+      console.log('fetchdashboarddata....')
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        alert('You must be logged in to access the dashboard.');
+        navigate('/login'); // Redirect to login if no token
+        return;
+      } else{
+        console.log('token found: ', token);
+      }
+/*
+      try {
+        const response = await axios.get('http://localhost:5000/api/auth/home', {
+          headers: { Authorization: token },
+        });
+        alert(response.data.message);
+      } catch (error) {
+        if (error.response?.status === 401) {
+          alert('Session expired or unauthorized access. Please log in again.');
+          localStorage.removeItem('authToken');
+          navigate('/login');
+        } else {
+          console.log('An error occurred. Please try again later.', error);
+        }
+      }*/
+    };
+
+    fetchDashboardData();
+  }, [navigate]);
+
   // Custom function to handle folder creation
   const handleCreateFolder = (newFolderName, parentPath) => {
     console.log(parentPath)
@@ -48,9 +84,15 @@ function Home() {
     console.log(files)
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('authToken'); 
+    navigate('/login'); 
+  };  
+
   return (
     <>
       <FileManager files={files} onCreateFolder={handleCreateFolder} />
+      <button onClick={handleLogout}>Logout</button> 
       <Terminal />
     </>
   );

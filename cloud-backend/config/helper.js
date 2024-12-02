@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -35,10 +36,17 @@ const sendEmailByA = async (email, code) => {
   }
 };
 
-// Example usage
-//sendEmailByA('Hakim Toutay', 'hakim.toutay@e-polytechnique.ma', '123456');
+const generateJwtToken = (id, email) => {
+  return jwt.sign(
+    { id, email }, 
+    process.env.JWT_SECRET, 
+    { expiresIn: '1h' }
+  )
+}
+
 
 module.exports = {
   sendEmailByA,
-  generateVerificationCode
+  generateVerificationCode,
+  generateJwtToken
 };

@@ -1,11 +1,11 @@
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const PreUser = require('../models/PreUser');
 const User = require('../models/User');
 
 const {
   generateVerificationCode,
-  sendEmailByA
+  sendEmailByA,
+  generateJwtToken
 } = require('../config/helper')
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -58,8 +58,8 @@ const loginUser = async (req, res) => {
   
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
-  
-      const token = jwt.sign({ id: user.id, email: user.email, password: user.password }, JWT_SECRET, { expiresIn: '1h' });
+      
+      const token = generateJwtToken(user.id, user.email);
       res.json({ message: 'Login successful', token });
     } catch (error) {
       console.error(error);
@@ -93,7 +93,10 @@ const verifyCode = async (req, res) => {
       // Delete PreUser after successful registration
       await PreUser.destroy({ where: { email } });
 
-      res.status(200).json({ message: 'Registration complete. You can now log in.' });
+      // Generate JWT token
+      const token = generateJwtToken(user.id, user.email);
+  
+      res.status(200).json({ message: 'Registration complete', token });
   } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Verification failed' });

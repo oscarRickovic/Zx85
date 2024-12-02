@@ -6,10 +6,9 @@ import Login from './Componenets/ComonentsJs/Login'
 import EmailValidation from './Componenets/ComonentsJs/EmailValidation'
 import NotFound from './Componenets/ComonentsJs/NotFound'
 import Home from './Componenets/ComonentsJs/Home'
+import ProtectedRoute from './Componenets/ComonentsJs/ProtectedRoutes'
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [email, setEmail] = useState('')
 
   return (
     <div className="App">
@@ -18,7 +17,10 @@ function App() {
           <Route path="/" element={<Sign/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/validation" element={<EmailValidation/>} />
-          <Route path="/home" element={<Home/>} />
+          <Route
+            path="/home"
+            element={<ProtectedRoute>{<Home />}</ProtectedRoute>}
+          />
           <Route path = "/*" element = {<NotFound/>}/>
         </Routes>
       </BrowserRouter>

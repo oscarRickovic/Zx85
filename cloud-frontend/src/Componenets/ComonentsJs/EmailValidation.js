@@ -41,17 +41,35 @@ const EmailValidation = () => {
 
     // Handle OTP submission
     const handleOtpSubmit = async () => {
-        const otpCode = otp.join('');
-        
+        const otpCode = otp.join('');  // Joining the OTP array into a string
+      
         try {
-            // Send OTP and email to backend for verification
-            const response = await axios.post('http://localhost:5000/api/auth/verify-code', { email, verificationCode: otpCode });
-            alert(response.data.message);
-            navigate(`/login`);
+          // Send OTP and email to backend for verification
+          const response = await axios.post('http://localhost:5000/api/auth/verify-code', { email, verificationCode: otpCode });
+          
+          // If verification is successful, save token and navigate
+          const token = response.data.token;
+          console.log("TOKEN: ", token);
+          localStorage.setItem('authToken', token);  // Store token
+          alert('Verification successful! You are logged in.');
+          navigate('/home');  // Redirect to homepage
+    
         } catch (error) {
-            setErrorMessage(error.response.data.error || 'An error occurred');
+          // Handle errors
+          if (error.response) {
+            // If the error is from the backend
+            console.error(error.response.data.error);
+            alert('Verification failed.');
+          } else {
+            // For other errors (e.g., network issues)
+            setErrorMessage('An error occurred. Please try again.');
+          }
+          
+          // Redirect to login page in case of failure
+          navigate(`/login`);
         }
     };
+      
 
     // Automatically hide the error message after 3 seconds
     useEffect(() => {
