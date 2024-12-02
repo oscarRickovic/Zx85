@@ -37,6 +37,7 @@ function Home() {
   // Custom function to handle folder creation
   const handleCreateFolder = (newFolderName, parentPath) => {
     console.log(parentPath)
+    ! parentPath && (parentPath = {name : "Home", isDirectory : true, path : ""})
     const newFolder = {
       name: newFolderName,
       isDirectory: true,
