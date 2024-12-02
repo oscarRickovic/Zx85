@@ -5,6 +5,7 @@ import "../ComponentsCss/Login.css"
 import LoginUserService from '../../Classes/Services/LoginUserService'
 import { LoginUserServiceEnum } from '../../Classes/Enums/LoginUserServiceEnums'
 import LoginUser from '../../Classes/Entities/LoginUser'
+import Crypto from '../../Classes/Helpers/Crypto'
 
 const Login = (props) => {
     const [email, setEmail] = useState('')
@@ -38,7 +39,8 @@ const Login = (props) => {
             }
         } else {
             try {
-                const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+                let encyptCredentials = Crypto.symetricalEncription(user);
+                const response = await axios.post('http://localhost:5000/api/auth/login', {encyptCredentials});
                 
                 // If login is successful
                 alert(response.data.message);

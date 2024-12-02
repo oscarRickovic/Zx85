@@ -6,15 +6,20 @@ const {
   generateVerificationCode,
   sendEmailByA,
   generateJwtToken
-} = require('../config/helper')
+} = require('../config/helper');
+
+const Crypto  = require('../Helpers/Crypto');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 
 const registerUser = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
+  const encryptedCredentials = req.body;
+  console.log(encryptedCredentials)
+  let user = Crypto.decryptSymEncryption(encryptedCredentials.encryptedCredentials);
+  const email = user.email;
+  const hashedPassword = user.password;
+  if (!email || !hashedPassword) {
     return res.status(400).json({ error: 'Email and password are required' });
   }
 
@@ -23,7 +28,6 @@ const registerUser = async (req, res) => {
     const existingUser = await User.findOne({ where: { email } });
     if (existingPreUser || existingUser) return res.status(400).json({ error: 'Email already exists' });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
     const verificationCode = generateVerificationCode();
 
     // Send verification email and wait for it to complete
@@ -46,9 +50,13 @@ const registerUser = async (req, res) => {
 
 
 const loginUser = async (req, res) => {
-    const { email, password } = req.body;
+    const encryptedCredentials = req.body;
+    console.log(encryptedCredentials)
+    let loginUser = Crypto.decryptSymEncryption(encryptedCredentials.encryptedCredentials);
+    const email = loginUser.email;
+    const hashedPassword = loginUser.password;
   
-    if (!email || !password) {
+    if (!email || !hashedPassword) {
       return res.status(400).json({ error: 'Email and password are required' });
     }
   
@@ -56,7 +64,7 @@ const loginUser = async (req, res) => {
       const user = await User.findOne({ where: { email } });
       if (!user) return res.status(400).json({ error: 'Invalid credentials' });
   
-      const isMatch = await bcrypt.compare(password, user.password);
+      const isMatch = await bcrypt.compare(hashedPassword, user.password);
       if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
       
       const token = generateJwtToken(user.id, user.email);
@@ -68,8 +76,12 @@ const loginUser = async (req, res) => {
   }
 
 const verifyCode = async (req, res) => {
-  const { email, verificationCode } = req.body;
-
+  const encryptedCredentials = req.body;
+  console.log(encryptedCredentials)
+  let credenatials = Crypto.decryptSymEncryption(encryptedCredentials.encryptedCredentials);
+  console.log(credenatials)
+  let email = credenatials.email;
+  let verificationCode = credenatials.verificationCode;
   if (!email || !verificationCode) {
       return res.status(400).json({ error: 'Email and verification code are required' });
   }

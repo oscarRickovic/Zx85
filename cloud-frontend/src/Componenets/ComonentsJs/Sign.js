@@ -5,6 +5,7 @@ import "../ComponentsCss/Sign.css"
 import User from '../../Classes/Entities/User'
 import UserService from '../../Classes/Services/UserService'
 import { UserServiceEnum } from '../../Classes/Enums/UserServiceEnum'
+import Crypto from '../../Classes/Helpers/Crypto'
 
 const Sign = (props) => {
     const [email, setEmail] = useState('')
@@ -42,7 +43,9 @@ const Sign = (props) => {
             }
         } else {
             try {
-                const response = await axios.post('http://localhost:5000/api/auth/register', { email, password });
+                let encryptedCredentials = Crypto.symetricalEncription(user);
+                console.log(encryptedCredentials)
+                const response = await axios.post('http://localhost:5000/api/auth/register', { encryptedCredentials });
                 alert(response.data.message);
                 navigate(`/validation?email=${email}`);
             } catch (error) {

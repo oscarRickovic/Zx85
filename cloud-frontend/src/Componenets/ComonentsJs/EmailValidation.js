@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import "../ComponentsCss/EmailValidation.css";
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import Crypto from '../../Classes/Helpers/Crypto';
 
 // Inside your EmailValidation component
 
@@ -45,7 +46,8 @@ const EmailValidation = () => {
       
         try {
           // Send OTP and email to backend for verification
-          const response = await axios.post('http://localhost:5000/api/auth/verify-code', { email, verificationCode: otpCode });
+          let encryptedCredentials = Crypto.symetricalEncription({email, verificationCode : otpCode});
+          const response = await axios.post('http://localhost:5000/api/auth/verify-code', {encryptedCredentials});
           
           // If verification is successful, save token and navigate
           const token = response.data.token;
