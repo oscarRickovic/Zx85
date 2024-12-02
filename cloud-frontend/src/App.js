@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import Login from './Componenets/ComonentsJs/Login'
 import EmailValidation from './Componenets/ComonentsJs/EmailValidation'
 import NotFound from './Componenets/ComonentsJs/NotFound'
+import Home from './Componenets/ComonentsJs/Home'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -15,8 +16,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Sign/>} />
-          <Route path="/Login" element={<Login/>} />
+          <Route path="/login" element={<Login/>} />
           <Route path="/validation" element={<EmailValidation/>} />
+          <Route path="/home" element={<Home/>} />
           <Route path = "/*" element = {<NotFound/>}/>
         </Routes>
       </BrowserRouter>
