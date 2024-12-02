@@ -12,33 +12,38 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 
 const registerUser = async (req, res) => {
-    const { email, password } = req.body;
-  
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' });
-    }
-  
-    try {
-      // Check if email already exists in PreUser or User
-      const existingPreUser = await PreUser.findOne({ where: { email } });
-      const existingUser = await User.findOne({ where: { email } });
-      if (existingPreUser || existingUser) return res.status(400).json({ error: 'Email already exists' });
-  
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const verificationCode = generateVerificationCode();
+  const { email, password } = req.body;
 
-      // Send verification email
-      sendEmailByA(email, verificationCode);
-      res.status(201).json({ message: 'Verification email sent. Please check your inbox.' });
-
-      // Save PreUser
-      const preUser = await PreUser.create({ email, password: hashedPassword, verificationCode });
-    } 
-    catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Registration failed' });
-    }
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required' });
   }
+
+  try {
+    const existingPreUser = await PreUser.findOne({ where: { email } });
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingPreUser || existingUser) return res.status(400).json({ error: 'Email already exists' });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const verificationCode = generateVerificationCode();
+
+    // Send verification email and wait for it to complete
+    const emailSent = await sendEmailByA(email, verificationCode);  // assuming sendEmailByA returns a promise
+    console.log("Email Sent INFOS: ", emailSent);
+    if (!emailSent) {
+        return res.status(500).json({ error: 'Failed to send verification email' });
+    }
+
+    // Save PreUser data after sending email
+    const preUser = await PreUser.create({ email, password: hashedPassword, verificationCode });
+
+    res.status(201).json({ message: 'Verification email sent. Please check your inbox.' });
+  } 
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Registration failed' });
+  }
+}
+
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -62,7 +67,42 @@ const loginUser = async (req, res) => {
     }
   }
 
+const verifyCode = async (req, res) => {
+  const { email, verificationCode } = req.body;
+
+  if (!email || !verificationCode) {
+      return res.status(400).json({ error: 'Email and verification code are required' });
+  }
+
+  try {
+      // Find PreUser by email
+      const preUser = await PreUser.findOne({ where: { email } });
+      if (!preUser) return res.status(400).json({ error: 'PreUser not found' });
+
+      // Check if verification code matches
+      if (preUser.verificationCode !== verificationCode) {
+          return res.status(400).json({ error: 'Invalid verification code' });
+      }
+
+      // Create User from PreUser data
+      const user = await User.create({
+          email: preUser.email,
+          password: preUser.password, // Save the hashed password
+      });
+
+      // Delete PreUser after successful registration
+      await PreUser.destroy({ where: { email } });
+
+      res.status(200).json({ message: 'Registration complete. You can now log in.' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Verification failed' });
+  }
+};
+
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    verifyCode
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import "../ComponentsCss/Sign.css"
 import User from '../../Classes/Entities/User'
@@ -13,7 +14,7 @@ const Sign = (props) => {
     const [passwordError, setPasswordError] = useState('')
     const [repeatedPasswordError, setRepeatedPasswordError] = useState('');
     const [errorMessage, setErrorMessage] = useState(''); // State for error message
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     
     const errorsPresentations = {
         [UserServiceEnum.EMAIL_ERROR]: setEmailError,
@@ -27,7 +28,7 @@ const Sign = (props) => {
         setRepeatedPasswordError('');
     }
     
-    const onButtonClick = () => {
+    const onButtonClick = async () => {
         setAllErrorsEmpty()
         let user = new User(email, password, repeatedPassword);
         let checkUserResult = UserService.checkUserData(user);
@@ -39,6 +40,14 @@ const Sign = (props) => {
             } else {
                 console.error('Unknown error type:', checkUserResult);
             }
+        } else {
+            try {
+                const response = await axios.post('http://localhost:5000/api/auth/register', { email, password });
+                alert(response.data.message);
+                navigate(`/validation?email=${email}`);
+            } catch (error) {
+                console.log(error.response.data.error || 'An error occurred');
+            }  
         }
     };
 

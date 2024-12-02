@@ -1,9 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "../ComponentsCss/EmailValidation.css";
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+
+// Inside your EmailValidation component
+
 
 const EmailValidation = () => {
     const [errorMessage, setErrorMessage] = useState(''); // State for error message
     const [otp, setOtp] = useState(new Array(6).fill('')); // State for OTP
+    const [email, setEmail] = useState('');  // Store email for verification
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setEmail(new URLSearchParams(location.search).get('email'));
+    }, [location.search]);
 
     // Handle OTP input change
     const handleOtpChange = (element, index) => {
@@ -26,8 +40,17 @@ const EmailValidation = () => {
     };
 
     // Handle OTP submission
-    const handleOtpSubmit = () => {
-        alert(`Entered OTP: ${otp.join('')}`);
+    const handleOtpSubmit = async () => {
+        const otpCode = otp.join('');
+        
+        try {
+            // Send OTP and email to backend for verification
+            const response = await axios.post('http://localhost:5000/api/auth/verify-code', { email, verificationCode: otpCode });
+            alert(response.data.message);
+            navigate(`/login`);
+        } catch (error) {
+            setErrorMessage(error.response.data.error || 'An error occurred');
+        }
     };
 
     // Automatically hide the error message after 3 seconds
@@ -56,7 +79,7 @@ const EmailValidation = () => {
                 <h2>Zx85</h2>
             </div>
 
-            <p>we have sent an email verification.</p>
+            <p>we have sent an email verification to { email }.</p>
 
             <div className="otp-container">
                 <h3>Enter the 6-digit OTP</h3>

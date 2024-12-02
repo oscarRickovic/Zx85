@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import "../ComponentsCss/Login.css"
 import LoginUserService from '../../Classes/Services/LoginUserService'
@@ -23,7 +24,7 @@ const Login = (props) => {
         setPasswordError('');
     }
     
-    const onButtonClick = () => {
+    const onButtonClick = async () => {
         setAllErrorsEmpty()
         let user = new LoginUser(email, password);
         let checkUserResult = LoginUserService.checkLoginUserData(user);
@@ -35,6 +36,10 @@ const Login = (props) => {
             } else {
                 console.error('Unknown error type:', checkUserResult);
             }
+        } else {
+            const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+            alert(response.data.message);
+            navigate(`/home`);
         }
     };
 

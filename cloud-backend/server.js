@@ -1,10 +1,12 @@
 const express = require('express');
 const sequelize = require('./config/db'); // MySQL connection
 const authRoutes = require('./routes/auth');
+const cors = require('cors');
 
 require('dotenv').config();
 
 const app = express();
+app.use(cors());  // Allow all origins, or configure specific origins
 app.use(express.json()); // Use built-in Express JSON parser
 
 // Routes
