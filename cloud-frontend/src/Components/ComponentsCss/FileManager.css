@@ -37,18 +37,22 @@
     border-radius: 4px;
 }
 
-.files {
-    width : 100%;
-    height : 92%;
+.elements {
+    width: 100%;
+    height: 92%;
     background-color: rgb(247, 243, 243);
     margin-top: 0.5%;
     border-radius: 4px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsive grid */
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Flexible columns with minimum size */
+    grid-template-rows:  repeat(auto-fill, minmax(100px, 1fr)); /* Flexible columns with minimum size */                        
     gap: 1rem; /* Space between folders */
     padding: 1rem;
     box-sizing: border-box;
     overflow-y: auto;
+    overflow-x: auto;
+    justify-items: stretch; /* Ensures items fill the cell width */
+    align-items: stretch; /* Ensures items fill the cell height */
 }
 
 .folder {
@@ -111,7 +115,7 @@
         display: none; /* Hide the divider in responsive mode */
     }
     .files {
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Adjust folder size */
+        grid-template-columns: repeat(3, 1fr); /* Adjust folder size */
         gap: 0.5rem;
     }
 

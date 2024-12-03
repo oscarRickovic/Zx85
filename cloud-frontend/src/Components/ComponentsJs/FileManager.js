@@ -52,9 +52,9 @@ const FileManager = () => {
             >
                 <div className = "filesPath">
                 </div>
-                <div className = "files">
+                <div className = "elements">
                     {/* Folder Items */}
-                    {[...Array(30)].map((_, index) => (
+                    {[...Array(1)].map((_, index) => (
                         <div key={index} className="folder">
                             <div className="folder-icon">📁</div>
                             <div className="folder-name">Folder {index + 1}</div>
