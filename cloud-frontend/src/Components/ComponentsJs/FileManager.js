@@ -4,6 +4,7 @@ import { FaFolder } from "react-icons/fa";
 import { FaFolderOpen } from "react-icons/fa";
 import Folder from "../../Classes/Entities/Folder";
 import File from "../../Classes/Entities/File";
+import { CiFileOn } from "react-icons/ci";
 import { FaFile } from "react-icons/fa";
 
 
@@ -85,7 +86,8 @@ const FileManager = () => {
                     {workingDirectory.subFiles.map((_, index) => (
                         <div key={index} className="file">
                             <div className="file-icon">
-                                <FaFile/>
+                                <FaFile className = "clickFile"/>
+                                <CiFileOn className = "noClickFile"/>
                             </div>
                             <div className="file-name">{workingDirectory.subFiles[index].name}</div>
                         </div>
