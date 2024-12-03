@@ -5,6 +5,7 @@ import { FaFolderOpen } from "react-icons/fa";
 
 
 const FileManager = () => {
+    const [workingDirectory, setWorkinDirectory] = useState("/");
     const [dividerPosition, setDividerPosition] = useState(20); // Default width of the first section is 30%
     useEffect(()=> {
         isResponsive();
