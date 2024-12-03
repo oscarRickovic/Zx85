@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../ComponentsCss/EmailValidation.css";
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
-import Crypto from '../../Classes/Helpers/Crypto';
 import EmailValidationHandler from './Actions/EmailValidationHandler';
 
 // Inside your EmailValidation component

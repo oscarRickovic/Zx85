@@ -32,6 +32,7 @@ export default class EmailValidationHandler {
           const token = response.data.token;
           console.log("TOKEN: ", token);
           localStorage.setItem('authToken', token);  // Store token
+          localStorage.setItem('email', response.data.user.email)
           alert('Verification successful! You are logged in.');
           functions.navigate('/home');  // Redirect to homepage
     

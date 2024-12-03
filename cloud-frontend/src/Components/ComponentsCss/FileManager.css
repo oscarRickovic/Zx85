@@ -1,0 +1,66 @@
+/* Container styling */
+.fileManager {
+    display: flex;
+    height: 65vh; /* Occupies 65% of viewport height */
+    width: 100vw; /* Full width */
+    background-color: #fff;
+    position: relative;
+    overflow: hidden;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+/* Section styling */
+.section {
+    height: 100%; /* Full height of the container */
+    overflow: auto; /* Enable scrolling if content overflows */
+    padding: 0.3rem;
+    box-sizing: border-box;
+}
+
+.left {
+    background-color: #ffffff;
+}
+
+.right {
+    background-color: #ffffff;
+}
+
+.filesPath{
+    width: 100%;
+    height: 5vh;
+    background-color: rgb(247, 243, 243);
+    margin-top: 0px;
+    border-radius: 5px;
+}
+
+/* Divider styling */
+.divider {
+    width: 5px; /* Divider width */
+    background-color: #adb5bd; /* Divider color */
+    cursor: col-resize; /* Resize cursor */
+    position: relative;
+    z-index: 10;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .fileManager {
+        flex-direction: column; /* Stack sections vertically */
+        justify-content: center;
+        align-items: center;
+    }
+
+    .left {
+        display: none; /* Hide the left section */
+    }
+
+    .right {
+        width: 100%; /* Full width for right section */
+    }
+
+    .divider {
+        display: none; /* Hide the divider in responsive mode */
+    }
+}
+

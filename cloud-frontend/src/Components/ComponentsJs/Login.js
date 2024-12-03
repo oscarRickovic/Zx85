@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import "../ComponentsCss/Login.css"
-import LoginUserService from '../../Classes/Services/LoginUserService'
-import { LoginUserServiceEnum } from '../../Classes/Enums/LoginUserServiceEnums'
 import LoginUser from '../../Classes/Entities/LoginUser'
-import Crypto from '../../Classes/Helpers/Crypto'
 import LoginHandler from './Actions/LoginHandler'
 
 const Login = (props) => {

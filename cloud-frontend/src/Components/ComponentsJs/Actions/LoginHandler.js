@@ -33,7 +33,7 @@ export default class LoginHandler {
             
                 // Store the token in localStorage for future requests
                 localStorage.setItem('authToken', response.data.token);
-
+                localStorage.setItem('email', response.data.user.email);
                 // Redirect to the home page
                 functions.navigate('/home');
             } catch (error) {
