@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Sign from './Componenets/ComonentsJs/Sign'
 import './App.css'
 import { useEffect, useState } from 'react'
-import Login from './Componenets/ComonentsJs/Login'
-import EmailValidation from './Componenets/ComonentsJs/EmailValidation'
-import NotFound from './Componenets/ComonentsJs/NotFound'
-import Home from './Componenets/ComonentsJs/Home'
-import ProtectedRoute from './Componenets/ComonentsJs/ProtectedRoutes'
+import Sign from './Components/ComponentsJs/Sign'
+import Login from './Components/ComponentsJs/Login'
+import EmailValidation from './Components/ComponentsJs/EmailValidation'
+import NotFound from './Components/ComponentsJs/NotFound'
+import Home from './Components/ComponentsJs/Home'
+import ProtectedRoute from './Components/ComponentsJs/ProtectedRoutes'
 
 function App() {
 

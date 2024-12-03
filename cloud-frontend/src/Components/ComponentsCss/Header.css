@@ -1,0 +1,37 @@
+/* General header styles */
+.header {
+    height: 7vh; /* Occupies 7% of viewport height */
+    width: 100%; /* Full width */
+    display: flex; /* Flexbox for layout */
+    justify-content: space-between; /* Space between left and right divs */
+    align-items: center; /* Vertically align items */
+    background-color: #f7f7f7; /* Light gray background */
+    padding: 0 1rem; /* Padding for inner spacing */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Styles for the left div */
+.header-left {
+    font-size: 1.3rem; /* Adjust font size */
+    font-weight: bold; /* Make text bold */
+    color: #333; /* Dark text color */
+    cursor: pointer;
+    margin-left: 2%;
+}
+
+/* Styles for the right div */
+.header-right {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+    margin-right: 2%;
+    cursor: pointer;
+
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .header-left, .header-right {
+        font-size: 0.9rem; /* Slightly smaller font size for smaller screens */
+    }
+}

@@ -35,7 +35,7 @@ const registerUser = async (req, res) => {
     // Save PreUser data after sending email
     const preUser = await PreUser.create({ email, password: hashedPassword, verificationCode });
 
-    res.status(201).json({ message: 'Verification email sent. Please check your inbox.' });
+    res.status(201).json({ message: 'Verification email sent. Please check your inbox.', user : {email : preUser.email}});
   } 
   catch (error) {
     console.error(error);
@@ -64,7 +64,7 @@ const loginUser = async (req, res) => {
       if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
       
       const token = JwtGenrator.generateJwtToken(user.id, user.email);
-      res.json({ message: 'Login successful', token });
+      res.json({ message: 'Login successful', token : token, user : {email : user.email} });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Login failed' });
@@ -104,7 +104,7 @@ const verifyCode = async (req, res) => {
       // Generate JWT token
       const token = JwtGenrator.generateJwtToken(user.id, user.email);
   
-      res.status(200).json({ message: 'Registration complete', token });
+      res.status(200).json({ message: 'Registration complete', token, user : {email : email}});
   } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Verification failed' });

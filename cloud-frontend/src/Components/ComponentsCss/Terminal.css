@@ -1,9 +1,9 @@
 /* Terminal.css */
 .terminal {
-    background-color: #fff;
+    background-color: #f7f7f7;
     color: #1a1d1a;
     font-family: 'Courier New', Courier, monospace;
-    height: 25vh;
+    height: 20vh;
     width: 100%;
     padding : 1%;
     display: flex;
