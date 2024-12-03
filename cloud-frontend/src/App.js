@@ -17,6 +17,7 @@ function App() {
           <Route path="/" element={<Sign/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/validation" element={<EmailValidation/>} />
+          <Route path="/home" element={<Home/>} />
           <Route
             path="/home"
             element={<ProtectedRoute>{<Home />}</ProtectedRoute>}
