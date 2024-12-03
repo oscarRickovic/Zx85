@@ -1,9 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "../ComponentsCss/EmailValidation.css";
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import Crypto from '../../Classes/Helpers/Crypto';
+
+// Inside your EmailValidation component
+
 
 const EmailValidation = () => {
     const [errorMessage, setErrorMessage] = useState(''); // State for error message
     const [otp, setOtp] = useState(new Array(6).fill('')); // State for OTP
+    const [email, setEmail] = useState('');  // Store email for verification
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setEmail(new URLSearchParams(location.search).get('email'));
+    }, [location.search]);
 
     // Handle OTP input change
     const handleOtpChange = (element, index) => {
@@ -26,9 +41,37 @@ const EmailValidation = () => {
     };
 
     // Handle OTP submission
-    const handleOtpSubmit = () => {
-        alert(`Entered OTP: ${otp.join('')}`);
+    const handleOtpSubmit = async () => {
+        const otpCode = otp.join('');  // Joining the OTP array into a string
+      
+        try {
+          // Send OTP and email to backend for verification
+          let encryptedCredentials = Crypto.symetricalEncription({email, verificationCode : otpCode});
+          const response = await axios.post('http://localhost:5000/api/auth/verify-code', {encryptedCredentials});
+          
+          // If verification is successful, save token and navigate
+          const token = response.data.token;
+          console.log("TOKEN: ", token);
+          localStorage.setItem('authToken', token);  // Store token
+          alert('Verification successful! You are logged in.');
+          navigate('/home');  // Redirect to homepage
+    
+        } catch (error) {
+          // Handle errors
+          if (error.response) {
+            // If the error is from the backend
+            console.error(error.response.data.error);
+            alert('Verification failed.');
+          } else {
+            // For other errors (e.g., network issues)
+            setErrorMessage('An error occurred. Please try again.');
+          }
+          
+          // Redirect to login page in case of failure
+          navigate(`/login`);
+        }
     };
+      
 
     // Automatically hide the error message after 3 seconds
     useEffect(() => {
@@ -56,7 +99,7 @@ const EmailValidation = () => {
                 <h2>Zx85</h2>
             </div>
 
-            <p>we have sent an email verification.</p>
+            <p>we have sent an email verification to { email }.</p>
 
             <div className="otp-container">
                 <h3>Enter the 6-digit OTP</h3>

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import "../ComponentsCss/Sign.css"
 import User from '../../Classes/Entities/User'
 import UserService from '../../Classes/Services/UserService'
 import { UserServiceEnum } from '../../Classes/Enums/UserServiceEnum'
+import Crypto from '../../Classes/Helpers/Crypto'
 
 const Sign = (props) => {
     const [email, setEmail] = useState('')
@@ -13,7 +15,7 @@ const Sign = (props) => {
     const [passwordError, setPasswordError] = useState('')
     const [repeatedPasswordError, setRepeatedPasswordError] = useState('');
     const [errorMessage, setErrorMessage] = useState(''); // State for error message
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     
     const errorsPresentations = {
         [UserServiceEnum.EMAIL_ERROR]: setEmailError,
@@ -27,7 +29,7 @@ const Sign = (props) => {
         setRepeatedPasswordError('');
     }
     
-    const onButtonClick = () => {
+    const onButtonClick = async () => {
         setAllErrorsEmpty()
         let user = new User(email, password, repeatedPassword);
         let checkUserResult = UserService.checkUserData(user);
@@ -39,6 +41,19 @@ const Sign = (props) => {
             } else {
                 console.error('Unknown error type:', checkUserResult);
             }
+        } else {
+            try {
+                user.password = Crypto.hashSHA256(user.password);
+                user.repeatedPassword = Crypto.hashSHA256(user.repeatedPassword);
+                alert(user.password)
+                let encryptedCredentials = Crypto.symetricalEncription(user);
+                console.log(encryptedCredentials)
+                const response = await axios.post('http://localhost:5000/api/auth/register', { encryptedCredentials });
+                alert(response.data.message);
+                navigate(`/validation?email=${email}`);
+            } catch (error) {
+                console.log(error.response.data.error || 'An error occurred');
+            }  
         }
     };
 
