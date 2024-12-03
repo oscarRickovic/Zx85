@@ -1,7 +1,25 @@
 import React, { useEffect, useState } from "react";
 import "../ComponentsCss/FileManager.css";
+import { FaFolder } from "react-icons/fa";
+import { FaFolderOpen } from "react-icons/fa";
+import Folder from "../../Classes/Entities/Folder";
+import File from "../../Classes/Entities/File";
+import { CiFileOn } from "react-icons/ci";
+import { FaFile } from "react-icons/fa";
+
+
 
 const FileManager = () => {
+    let Root = new Folder();
+    let Home = new Folder("Home", Root);
+    let Documents = new Folder("Documents", Root);
+    let Desktop = new Folder("Desktop", Root);
+    let music = new Folder("music", Documents);
+    let abdelhadi = new File("abdelhadi", Desktop)
+    let abdelhadi2 = new File("abdelhadi", Root)
+
+    console.log(Root.subFiles)
+    const [workingDirectory, setWorkinDirectory] = useState(Root);
     const [dividerPosition, setDividerPosition] = useState(20); // Default width of the first section is 30%
     useEffect(()=> {
         isResponsive();
@@ -52,14 +70,30 @@ const FileManager = () => {
             >
                 <div className = "filesPath">
                 </div>
-                <div className = "files">
+                <div className = "elements">
                     {/* Folder Items */}
-                    {[...Array(30)].map((_, index) => (
-                        <div key={index} className="folder">
-                            <div className="folder-icon">📁</div>
-                            <div className="folder-name">Folder {index + 1}</div>
+                    {workingDirectory.subFolders.map((_, index) => (
+                        <div key={index} className="folder" onDoubleClick={() => {setWorkinDirectory(workingDirectory.subFolders[index])}}>
+                            <div className="folder-icon">
+                                <FaFolder className="closeFolder"/>
+                                <FaFolderOpen className="openFolder"/>
+                            </div>
+                            <div className="folder-name">{workingDirectory.subFolders[index].name}</div>
                         </div>
                     ))}
+
+                    {/* Files Items */}
+                    {workingDirectory.subFiles.map((_, index) => (
+                        <div key={index} className="file">
+                            <div className="file-icon">
+                                <FaFile className = "clickFile"/>
+                                <CiFileOn className = "noClickFile"/>
+                            </div>
+                            <div className="file-name">{workingDirectory.subFiles[index].name}</div>
+                        </div>
+                    ))}
+
+
                 </div>
             </div>
         </div>
