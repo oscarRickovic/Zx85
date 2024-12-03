@@ -81,4 +81,14 @@ export default class Folder {
 
         return { res: true, message: "Deleted successfully" };
     }
+
+    getPath() {
+        const path = [];
+        let currentFolder = this;
+        while (currentFolder) {
+            path.unshift(currentFolder); // Add the folder to the start of the array
+            currentFolder = currentFolder.parent; // Traverse up to the parent
+        }
+        return path;
+    }
 }
