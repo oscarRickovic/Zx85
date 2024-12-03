@@ -1,5 +1,5 @@
 const express = require('express');
-const sequelize = require('./config/db'); // MySQL connection
+const sequelize = require('./database/db'); // MySQL connection
 const authRoutes = require('./routes/auth');
 const cors = require('cors');
 
