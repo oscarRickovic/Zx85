@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../ComponentsCss/FileManager.css";
+import { FaFolder } from "react-icons/fa";
+import { FaFolderOpen } from "react-icons/fa";
+
 
 const FileManager = () => {
     const [dividerPosition, setDividerPosition] = useState(20); // Default width of the first section is 30%
@@ -54,9 +57,12 @@ const FileManager = () => {
                 </div>
                 <div className = "elements">
                     {/* Folder Items */}
-                    {[...Array(1)].map((_, index) => (
+                    {[...Array(100)].map((_, index) => (
                         <div key={index} className="folder">
-                            <div className="folder-icon">📁</div>
+                            <div className="folder-icon">
+                                <FaFolder className="closeFolder"/>
+                                <FaFolderOpen className="openFolder"/>
+                            </div>
                             <div className="folder-name">Folder {index + 1}</div>
                         </div>
                     ))}
