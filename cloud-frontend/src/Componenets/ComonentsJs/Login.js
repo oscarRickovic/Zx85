@@ -39,8 +39,10 @@ const Login = (props) => {
             }
         } else {
             try {
-                let encyptCredentials = Crypto.symetricalEncription(user);
-                const response = await axios.post('http://localhost:5000/api/auth/login', {encyptCredentials});
+                user.password = Crypto.hashSHA256(user.password);
+                let encyptedCredentials = Crypto.symetricalEncription(user);
+                console.log(encyptedCredentials)
+                const response = await axios.post('http://localhost:5000/api/auth/login', {encyptedCredentials});
                 
                 // If login is successful
                 alert(response.data.message);

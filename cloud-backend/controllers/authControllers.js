@@ -1,13 +1,8 @@
 const bcrypt = require('bcryptjs');
 const PreUser = require('../models/PreUser');
 const User = require('../models/User');
-
-const {
-  generateVerificationCode,
-  sendEmailByA,
-  generateJwtToken
-} = require('../config/helper');
-
+const EmailVerification = require('../Helpers/EmailVerification')
+const JwtGenrator = require('../Helpers/JwtGenerator');
 const Crypto  = require('../Helpers/Crypto');
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -28,10 +23,10 @@ const registerUser = async (req, res) => {
     const existingUser = await User.findOne({ where: { email } });
     if (existingPreUser || existingUser) return res.status(400).json({ error: 'Email already exists' });
 
-    const verificationCode = generateVerificationCode();
+    const verificationCode = EmailVerification.generateVerificationCode();
 
     // Send verification email and wait for it to complete
-    const emailSent = await sendEmailByA(email, verificationCode);  // assuming sendEmailByA returns a promise
+    const emailSent = await EmailVerification.sendEmailByA(email, verificationCode);  // assuming sendEmailByA returns a promise
     console.log("Email Sent INFOS: ", emailSent);
     if (!emailSent) {
         return res.status(500).json({ error: 'Failed to send verification email' });
@@ -52,7 +47,8 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const encryptedCredentials = req.body;
     console.log(encryptedCredentials)
-    let loginUser = Crypto.decryptSymEncryption(encryptedCredentials.encryptedCredentials);
+    let loginUser = Crypto.decryptSymEncryption(encryptedCredentials.encyptedCredentials);
+    console.log(loginUser)
     const email = loginUser.email;
     const hashedPassword = loginUser.password;
   
@@ -64,10 +60,10 @@ const loginUser = async (req, res) => {
       const user = await User.findOne({ where: { email } });
       if (!user) return res.status(400).json({ error: 'Invalid credentials' });
   
-      const isMatch = await bcrypt.compare(hashedPassword, user.password);
+      const isMatch = hashedPassword == user.password;
       if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
       
-      const token = generateJwtToken(user.id, user.email);
+      const token = JwtGenrator.generateJwtToken(user.id, user.email);
       res.json({ message: 'Login successful', token });
     } catch (error) {
       console.error(error);
@@ -106,7 +102,7 @@ const verifyCode = async (req, res) => {
       await PreUser.destroy({ where: { email } });
 
       // Generate JWT token
-      const token = generateJwtToken(user.id, user.email);
+      const token = JwtGenrator.generateJwtToken(user.id, user.email);
   
       res.status(200).json({ message: 'Registration complete', token });
   } catch (error) {

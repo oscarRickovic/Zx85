@@ -43,6 +43,9 @@ const Sign = (props) => {
             }
         } else {
             try {
+                user.password = Crypto.hashSHA256(user.password);
+                user.repeatedPassword = Crypto.hashSHA256(user.repeatedPassword);
+                alert(user.password)
                 let encryptedCredentials = Crypto.symetricalEncription(user);
                 console.log(encryptedCredentials)
                 const response = await axios.post('http://localhost:5000/api/auth/register', { encryptedCredentials });

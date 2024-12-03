@@ -21,5 +21,9 @@ export default class Crypto {
         );
         return encrypted.toString(); // Encrypted data in Base64
     }
+
+    static hashSHA256 (data) {
+        return SHA256(data).toString(CryptoJS.enc.Hex);
+    }
 }
 

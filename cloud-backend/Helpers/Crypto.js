@@ -38,7 +38,7 @@ class Crypto {
 }
 
 // Test example
-//const encryptedData = 'oZXMZMDrNuusobEPOP/oXmovvLUSi2H7gVxaLHq3pzArpS/f2iF1XAcsWfauZzndSba8ePKVG7CiFr4C141VMuqPTOPMGavU9wnojjAgQ1Pi16MEC0FnDXYqCwmOCQ9VoIwaI2IgrLpceBcErY25BQ==';
+//const encryptedData = 'wcDgWmzHBO+LTNNSkUVsZqXt+K8hXbrcVFp1MefnPYNOhku2isr5dASG75iBYiLjrPdW+8pmJAMhVu7m88euiQ1kSt/kiGZDQOsZzaHGIqd41BqwoWcnlhORdntcylFfqoZfIA99aZULsVBf/BH35wHdzo/YB1t0xG+CLVqcz3U=';
 //Crypto.test(encryptedData);
 
 
