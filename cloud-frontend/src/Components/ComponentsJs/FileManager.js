@@ -6,6 +6,7 @@ import Folder from "../../Classes/Entities/Folder";
 import File from "../../Classes/Entities/File";
 import { CiFileOn } from "react-icons/ci";
 import { FaFile } from "react-icons/fa";
+import FolderHierarchy from "./FolderHierarchy";
 
 
 
@@ -58,8 +59,9 @@ const FileManager = () => {
                 className="section left"
                 style={{ width: `${dividerPosition}%` }}
             >
-                Left Section
+                <FolderHierarchy folder={Root} setWorkingDirectory={setWorkinDirectory} />
             </div>
+
             <div
                 className="divider"
                 onMouseDown={handleMouseDown}
@@ -72,24 +74,24 @@ const FileManager = () => {
                 </div>
                 <div className = "elements">
                     {/* Folder Items */}
-                    {workingDirectory.subFolders.map((_, index) => (
+                    {workingDirectory.subFolders.map((subFolder, index) => (
                         <div key={index} className="folder" onDoubleClick={() => {setWorkinDirectory(workingDirectory.subFolders[index])}}>
                             <div className="folder-icon">
                                 <FaFolder className="closeFolder"/>
                                 <FaFolderOpen className="openFolder"/>
                             </div>
-                            <div className="folder-name">{workingDirectory.subFolders[index].name}</div>
+                            <div className="folder-name">{subFolder.name}</div>
                         </div>
                     ))}
 
                     {/* Files Items */}
-                    {workingDirectory.subFiles.map((_, index) => (
+                    {workingDirectory.subFiles.map((subFile, index) => (
                         <div key={index} className="file">
                             <div className="file-icon">
                                 <FaFile className = "clickFile"/>
                                 <CiFileOn className = "noClickFile"/>
                             </div>
-                            <div className="file-name">{workingDirectory.subFiles[index].name}</div>
+                            <div className="file-name">{subFile.name}</div>
                         </div>
                     ))}
 

@@ -1,0 +1,34 @@
+.folder-hierarchy {
+    margin-left: 10px; /* Indent for nested items */
+}
+
+.folder-item,
+.file-item {
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.folder-item:hover {
+    background-color: #f0f0f0;
+}
+
+.folder-name {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.icon {
+    margin-right: 5px;
+    color: #555;
+}
+
+.icon-open {
+    margin-right: 5px;
+    color: #007bff;
+}
+
+.subfolder {
+    margin-left: 15px; /* Indent for subfolders */
+    transition: all 0.3s ease-in-out;
+}
