@@ -67,6 +67,18 @@
     cursor: pointer;
 }
 
+.file {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
 .closeFolder{
     display: block;
 }
@@ -95,6 +107,20 @@
 
 /* Folder name */
 .folder-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+    word-wrap: break-word;
+}
+
+/* Folder icon */
+.file-icon {
+    font-size: 4rem; /* Adjust size */
+    margin-bottom: 0.5rem;
+}
+
+/* Folder name */
+.file-name {
     font-size: 0.9rem;
     font-weight: 500;
     color: #333;
