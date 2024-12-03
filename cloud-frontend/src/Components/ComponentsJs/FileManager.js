@@ -51,7 +51,15 @@ const FileManager = () => {
                 style={{ width: `${100 - dividerPosition }%` }}
             >
                 <div className = "filesPath">
-                    
+                </div>
+                <div className = "files">
+                    {/* Folder Items */}
+                    {[...Array(30)].map((_, index) => (
+                        <div key={index} className="folder">
+                            <div className="folder-icon">📁</div>
+                            <div className="folder-name">Folder {index + 1}</div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

@@ -16,6 +16,8 @@
     overflow: auto; /* Enable scrolling if content overflows */
     padding: 0.3rem;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .left {
@@ -27,11 +29,57 @@
 }
 
 .filesPath{
+    display: block;
     width: 100%;
-    height: 5vh;
+    height: 8%;
     background-color: rgb(247, 243, 243);
     margin-top: 0px;
-    border-radius: 5px;
+    border-radius: 4px;
+}
+
+.files {
+    width : 100%;
+    height : 92%;
+    background-color: rgb(247, 243, 243);
+    margin-top: 0.5%;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsive grid */
+    gap: 1rem; /* Space between folders */
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.folder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.folder:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Folder icon */
+.folder-icon {
+    font-size: 4rem; /* Adjust size */
+    margin-bottom: 0.5rem;
+}
+
+/* Folder name */
+.folder-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+    word-wrap: break-word;
 }
 
 /* Divider styling */
@@ -61,6 +109,22 @@
 
     .divider {
         display: none; /* Hide the divider in responsive mode */
+    }
+    .files {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Adjust folder size */
+        gap: 0.5rem;
+    }
+
+    .folder {
+        padding: 0.5rem;
+    }
+
+    .folder-icon {
+        font-size: 1.5rem;
+    }
+
+    .folder-name {
+        font-size: 0.8rem;
     }
 }
 
