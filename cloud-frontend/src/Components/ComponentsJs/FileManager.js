@@ -93,22 +93,26 @@ const FileManager = () => {
         setMenuVisible(false);
     };
 
-    const handleMouseDown = (e) => {
-        e.preventDefault();
-        const startX = e.clientX;
+    const handleMouseMove = (e) => {
+        try {
+            const containerWidth = e.target.parentElement.offsetWidth; // Get the container width
+            const newDividerPosition = (e.clientX / containerWidth) * 100; // Calculate new width percentage
+            if (newDividerPosition > 10 && newDividerPosition < 90) { // Restrict resizing to reasonable bounds
+                setDividerPosition(newDividerPosition);
+            }
+        } catch(error) {
+            // do nothing
+        }
+    };
 
-        const handleMouseMove = (moveEvent) => {
-            const newDividerPosition = dividerPosition + (moveEvent.clientX - startX);
-            setDividerPosition(Math.max(0, Math.min(100, newDividerPosition)));
-        };
+    const handleMouseUp = () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+    };
 
-        const handleMouseUp = () => {
-            document.removeEventListener("mousemove", handleMouseMove);
-            document.removeEventListener("mouseup", handleMouseUp);
-        };
-
-        document.addEventListener("mousemove", handleMouseMove);
-        document.addEventListener("mouseup", handleMouseUp);
+    const handleMouseDown = () => {
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mouseup", handleMouseUp);
     };
 
     return (
