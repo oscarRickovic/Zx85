@@ -114,7 +114,13 @@ const FileManager = () => {
             </div>
 
             <div className="divider" onMouseDown={handleMouseDown}></div>
-            <div className="section right" style={{ width: `${100 - dividerPosition}%` }}>
+            <div 
+              className="section right" 
+              style={{ width: `${100 - dividerPosition}%` }}
+              onClick={()=> {
+                if(!menuVisible) setIsCreatingFolder(false)
+              }
+            }>
                 <div className="filesPath">
                     <div className="breadcrumb">
                         {workingDirectory.getPath().map((folder, index) => (
