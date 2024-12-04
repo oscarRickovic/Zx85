@@ -7,6 +7,7 @@ import EmailValidation from './Components/ComponentsJs/EmailValidation'
 import NotFound from './Components/ComponentsJs/NotFound'
 import Home from './Components/ComponentsJs/Home'
 import ProtectedRoute from './Components/ComponentsJs/ProtectedRoutes'
+import Test from './Components/ComponentsJs/Test'
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Sign/>} />
+          <Route path="/test" element={<Test/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/validation" element={<EmailValidation/>} />
           <Route path="/home" element={<Home/>} />
