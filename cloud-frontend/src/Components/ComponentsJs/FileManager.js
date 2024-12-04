@@ -41,7 +41,7 @@ const FileManager = () => {
       e.preventDefault();
       setSelectedItem(item);
       setIsEmptySpace(emptySpace);
-      setMenuPosition({ x: e.clientX, y: e.clientY });
+      setMenuPosition({ x: e.clientX , y: e.clientY - 80});
       setMenuVisible(true);
     };
   
