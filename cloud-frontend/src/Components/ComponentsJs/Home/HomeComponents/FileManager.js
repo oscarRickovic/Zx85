@@ -8,8 +8,9 @@ import Folder from "../../../../Classes/Entities/Folder";
 import File from "../../../../Classes/Entities/File";
 import { CiFileOn } from "react-icons/ci";
 import { FaFile } from "react-icons/fa";
-import { FaUpload } from "react-icons/fa";
+import { MdOutlineCloudUpload } from "react-icons/md";
 import FolderHierarchy from "./FolderHierarchy";
+import { VscNewFolder } from "react-icons/vsc";
 import FileManagerActionsHandler from "./Actions/FileManagerActionsHandler";
 
 const FileManager = () => {
@@ -134,10 +135,10 @@ const FileManager = () => {
                     </div>
                     <div className="actions">
                         <div className="path-bar-icon">
-                            <FaUpload />
+                            <MdOutlineCloudUpload/>
                         </div>
                         <div  className="path-bar-icon">
-                            <FaFolder />
+                            <VscNewFolder />
                         </div>
                     </div>
                 </div>
