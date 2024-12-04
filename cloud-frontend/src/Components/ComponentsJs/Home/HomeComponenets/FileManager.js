@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "../ComponentsCss/FileManager.css";
-import "../ComponentsCss/FilesPath.css";
-import "../ComponentsCss/ContextMenu.css";
+import "../../../ComponentsCss/FileManager.css";
+import "../../../ComponentsCss/FilesPath.css";
+import "../../../ComponentsCss/ContextMenu.css";
 import { FaFolder } from "react-icons/fa";
 import { FaFolderOpen } from "react-icons/fa";
-import Folder from "../../Classes/Entities/Folder";
-import File from "../../Classes/Entities/File";
+import Folder from "../../../../Classes/Entities/Folder";
+import File from "../../../../Classes/Entities/File";
 import { CiFileOn } from "react-icons/ci";
 import { FaFile } from "react-icons/fa";
 import FolderHierarchy from "./FolderHierarchy";

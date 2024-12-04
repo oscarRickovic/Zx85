@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaFolder } from "react-icons/fa";
 import { CiFileOn } from "react-icons/ci";
-import "../ComponentsCss/FolderHierarchy.css";
+import "../../../ComponentsCss/FolderHierarchy.css";
 
 const FolderHierarchy = ({ folder, setWorkingDirectory }) => {
     const [isOpen, setIsOpen] = useState(false); // Track folder toggle state

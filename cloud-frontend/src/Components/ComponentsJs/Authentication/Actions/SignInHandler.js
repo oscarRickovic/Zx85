@@ -1,7 +1,7 @@
 import axios from 'axios'
-import UserService from '../../../Classes/Services/UserService'
-import { UserServiceEnum } from '../../../Classes/Enums/UserServiceEnum'
-import Crypto from '../../../Classes/Helpers/Crypto'
+import UserService from '../../../../Classes/Services/UserService'
+import { UserServiceEnum } from '../../../../Classes/Enums/UserServiceEnum'
+import Crypto from '../../../../Classes/Helpers/Crypto'
 export default class SignInHandler{
     static async signUser(user, functions) {
         const errorsPresentations = {
