@@ -164,7 +164,9 @@ const FileManager = () => {
                             {workingDirectory.subFolders.map((subFolder, index) => (
                                 <div
                                     key={index}
-                                    className="folder"
+                                    className= {
+                                        selectedItem != null ? (selectedItem.path === subFolder.path ? "folder-selected" : "folder") : "folder"
+                                    }
                                     onDoubleClick={() =>
                                         setWorkingDirectory(workingDirectory.subFolders[index])
                                     }
@@ -181,7 +183,9 @@ const FileManager = () => {
                             {workingDirectory.subFiles.map((subFile, index) => (
                                 <div
                                     key={index}
-                                    className="file"
+                                    className={
+                                        selectedItem != null ? (selectedItem.path === subFile.path ? "file-selected" : "file") : "file"
+                                    }
                                     onContextMenu={(e) => handleRightClick(e, subFile)}
                                 >
                                     <div className="file-icon">

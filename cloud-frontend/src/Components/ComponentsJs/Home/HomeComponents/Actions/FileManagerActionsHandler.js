@@ -31,6 +31,7 @@ export default class FileManagerActionsHandler {
         if (this.Variables.menuVisible && !e.target.closest(".context-menu")) {
             this.Functions.setMenuVisible(false);
         }
+        this.Functions.setSelectedItem(null)
     };
 
     handleCreateAction = () => {
