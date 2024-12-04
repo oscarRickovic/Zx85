@@ -86,7 +86,11 @@ const FileManager = () => {
         if (action === "Create") {
             handleCreateAction();
         }
+        if (action === "Delete") {
+          selectedItem.delete();
+        }
         // Other actions here
+        setMenuVisible(false);
     };
 
     const handleMouseDown = (e) => {
