@@ -24,7 +24,6 @@ export default class File {
             }
             this.parentFolder.size += this.size;
             this.parentFolder.subFiles.push(this)
-            console.log("created file")
         }
     }
 
