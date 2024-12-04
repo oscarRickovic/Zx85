@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "../ComponentsCss/EmailValidation.css";
+import "../../ComponentsCss/EmailValidation.css";
 import { useLocation } from 'react-router-dom';
 import EmailValidationHandler from './Actions/EmailValidationHandler';
 

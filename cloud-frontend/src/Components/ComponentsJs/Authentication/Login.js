@@ -1,34 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import "../ComponentsCss/Sign.css"
-import User from '../../Classes/Entities/User'
-import SignInHandler from './Actions/SignInHandler'
+import "../../ComponentsCss/Login.css"
+import LoginUser from '../../../Classes/Entities/LoginUser'
+import LoginHandler from './Actions/LoginHandler'
 
-const Sign = (props) => {
+const Login = (props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [repeatedPassword, setRepeatedPassword] = useState('');
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
-    const [repeatedPasswordError, setRepeatedPasswordError] = useState('');
     const [errorMessage, setErrorMessage] = useState(''); // State for error message
+    const navigate = useNavigate()
     
-    const navigate = useNavigate();
 
     const onButtonClick = async () => {
-        let user = new User(email, password, repeatedPassword);
-        await SignInHandler.signUser(user, 
-            {
-                setEmailError,
-                setPasswordError,
-                setRepeatedPasswordError,
-                setErrorMessage,
+        let user = new LoginUser(email, password);
+        await LoginHandler.login(user, {
+            setEmailError,
+            setPasswordError,
+            setErrorMessage,
 
-                navigate
-            }
-        )
-        
-    };
+            navigate
+        })
+    }
+    
+
+    // Automatically hide the error message after 3 seconds
     useEffect(() => {
         if (errorMessage) {
             const timer = setTimeout(() => {
@@ -77,26 +74,15 @@ const Sign = (props) => {
         />
         </div>
         
-        <br/>
-        <div className={'inputContainer'}>
-        <input
-            type='password'
-            value={repeatedPassword}
-            placeholder="Reenter password.."
-            onChange={(ev) => setRepeatedPassword(ev.target.value)}
-            className={'inputBox'}
-        />
-        </div>
-        
         <br />
         
         <div className={'inputContainer'}>
-        <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Sign'} />
+        <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Login'} />
         </div>
         
-        <p className = {"changePage"} onClick={ () => {navigate("/login")}}>Already have Account</p>
+        <p className = {"changePage"} onClick={ () => {navigate("/")}}>Don't have Account</p>
     </div>
     )
 }
 
-export default Sign
+export default Login

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import "../ComponentsCss/Terminal.css";
+import "../../../ComponentsCss/Terminal.css";
 
 const Terminal = () => {
   const [commands, setCommands] = useState([]);

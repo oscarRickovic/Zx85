@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import { useEffect, useState } from 'react'
-import Sign from './Components/ComponentsJs/Sign'
-import Login from './Components/ComponentsJs/Login'
-import EmailValidation from './Components/ComponentsJs/EmailValidation'
+import Sign from './Components/ComponentsJs/Authentication/Sign'
+import Login from './Components/ComponentsJs/Authentication/Login'
+import EmailValidation from './Components/ComponentsJs/Authentication/EmailValidation'
 import NotFound from './Components/ComponentsJs/NotFound'
-import Home from './Components/ComponentsJs/Home'
+import Home from './Components/ComponentsJs/Home/Home'
 import ProtectedRoute from './Components/ComponentsJs/ProtectedRoutes'
 
 function App() {

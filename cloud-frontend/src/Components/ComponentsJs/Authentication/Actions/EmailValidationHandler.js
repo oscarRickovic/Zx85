@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Crypto from '../../../Classes/Helpers/Crypto';
+import Crypto from '../../../../Classes/Helpers/Crypto';
 
 export default class EmailValidationHandler {
     static handleOtpChange(variables, functions) {

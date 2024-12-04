@@ -1,7 +1,7 @@
 import axios from 'axios'
-import LoginUserService from '../../../Classes/Services/LoginUserService'
-import { LoginUserServiceEnum } from '../../../Classes/Enums/LoginUserServiceEnums'
-import Crypto from '../../../Classes/Helpers/Crypto'
+import LoginUserService from '../../../../Classes/Services/LoginUserService'
+import { LoginUserServiceEnum } from '../../../../Classes/Enums/LoginUserServiceEnums'
+import Crypto from '../../../../Classes/Helpers/Crypto'
 
 export default class LoginHandler {
     static async login(user, functions) {
