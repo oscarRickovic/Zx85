@@ -69,7 +69,7 @@ export default class FileManagerActionsHandler {
         try {
             const containerWidth = e.target.parentElement.offsetWidth; // Get the container width
             const newDividerPosition = (e.clientX / containerWidth) * 100; // Calculate new width percentage
-            if (this.Variables.newDividerPosition > 10 && this.Variables.newDividerPosition < 90) { // Restrict resizing to reasonable bounds
+            if (newDividerPosition > 10 && newDividerPosition < 90) { // Restrict resizing to reasonable bounds
                 this.Functions.setDividerPosition(newDividerPosition);
             }
         } catch(error) {

@@ -76,10 +76,6 @@ const FileManager = () => {
         fileManagerActionsHandler.handleClickOutside(e);
     };
 
-    const handleCreateAction = () => {
-        fileManagerActionsHandler.handleCreateAction();
-    };
-
     const handleNewFolderNameChange = (e) => {
         setNewFolderName(e.target.value);
     };
