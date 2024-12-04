@@ -67,6 +67,19 @@
     cursor: pointer;
 }
 
+.folder-selected {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    background-color: #adb5bd;
+}
+
 .file {
     display: flex;
     flex-direction: column;
@@ -77,6 +90,19 @@
     border-radius: 8px;
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
+}
+
+.file-selected {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    background-color: #adb5bd;
 }
 
 .closeFolder{
