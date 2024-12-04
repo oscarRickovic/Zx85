@@ -9,18 +9,12 @@ import File from "../../../../Classes/Entities/File";
 import { CiFileOn } from "react-icons/ci";
 import { FaFile } from "react-icons/fa";
 import FolderHierarchy from "./FolderHierarchy";
+import FileManagerActionsHandler from "./Actions/FileManagerActionsHandler";
 
 const FileManager = () => {
-    // Initial setup
-    let Root = new Folder();
-    let Home = new Folder("Home", Root);
-    let Documents = new Folder("Documents", Root);
-    let Desktop = new Folder("Desktop", Root);
-    let music = new Folder("music", Documents);
-    let abdelhadi = new File("abdelhadi", Desktop);
-    let abdelhadi2 = new File("abdelhadi", Root);
-
-    const [workingDirectory, setWorkingDirectory] = useState(Root);
+    // All useStates variables, setters.
+    const Data = FileManagerActionsHandler.getData(); 
+    const [workingDirectory, setWorkingDirectory] = useState(Data.Root);
     const [dividerPosition, setDividerPosition] = useState(20);
     const [menuVisible, setMenuVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
@@ -29,29 +23,36 @@ const FileManager = () => {
     const [isCreatingFolder, setIsCreatingFolder] = useState(false);
     const [newFolderName, setNewFolderName] = useState("");
 
+    // create Variables and functions for FileManagerActionsHndler
+    const Variables = {
+        workingDirectory,
+        dividerPosition,
+        menuVisible,
+        menuPosition,
+        selectedItem,
+        isEmptySpace,
+        isCreatingFolder,
+        newFolderName
+    }
+
+    const Functions = {
+        setWorkingDirectory,
+        setDividerPosition,
+        setMenuVisible,
+        setMenuPosition,
+        setSelectedItem,
+        setIsEmptySpace,
+        setIsCreatingFolder,
+        setNewFolderName
+    }
+
+    // connect to FileManagerActionsHandler.
+    const fileManagerActionsHandler = new FileManagerActionsHandler(Variables, Functions);
+    
+    // useEffects
     useEffect(() => {
         isResponsive();
     }, []);
-
-    const isResponsive = () => {
-        let res = window.innerWidth <= 768;
-        res && setDividerPosition(0);
-        return res;
-    };
-
-    const handleRightClick = (e, item = null, emptySpace = false) => {
-        e.preventDefault();
-        setSelectedItem(item);
-        setIsEmptySpace(emptySpace);
-        setMenuPosition({ x: e.clientX, y: e.clientY - 80 });
-        setMenuVisible(true);
-    };
-
-    const handleClickOutside = (e) => {
-        if (menuVisible && !e.target.closest(".context-menu")) {
-            setMenuVisible(false);
-        }
-    };
 
     useEffect(() => {
         document.addEventListener("click", handleClickOutside);
@@ -60,10 +61,23 @@ const FileManager = () => {
         };
     }, [menuVisible]);
 
+    // Functions
+    const isResponsive = () => {
+        let res = window.innerWidth <= 768;
+        res && setDividerPosition(0);
+        return res;
+    };
+
+    const handleRightClick = (e, item = null, emptySpace = false) => {
+        fileManagerActionsHandler.handleRightClick(e, item, emptySpace);
+    };
+
+    const handleClickOutside = (e) => {
+        fileManagerActionsHandler.handleClickOutside(e);
+    };
+
     const handleCreateAction = () => {
-        setIsCreatingFolder(true);
-        setNewFolderName("");
-        setMenuVisible(false);
+        fileManagerActionsHandler.handleCreateAction();
     };
 
     const handleNewFolderNameChange = (e) => {
@@ -71,38 +85,15 @@ const FileManager = () => {
     };
 
     const handleNewFolderCreation = (e) => {
-        if (e.key === "Enter" && newFolderName.trim()) {
-            const newFolder = new Folder(newFolderName.trim(), workingDirectory);
-            workingDirectory.addFolder(newFolder);
-            setIsCreatingFolder(false);
-            setNewFolderName("");
-        } else if (e.key === "Escape") {
-            setIsCreatingFolder(false);
-            setNewFolderName("");
-        }
+        fileManagerActionsHandler.handleNewFolderCreation(e);
     };
 
     const handleAction = (action) => {
-        if (action === "Create") {
-            handleCreateAction();
-        }
-        if (action === "Delete") {
-          selectedItem.delete();
-        }
-        // Other actions here
-        setMenuVisible(false);
+        fileManagerActionsHandler.handleAction(action);
     };
 
     const handleMouseMove = (e) => {
-        try {
-            const containerWidth = e.target.parentElement.offsetWidth; // Get the container width
-            const newDividerPosition = (e.clientX / containerWidth) * 100; // Calculate new width percentage
-            if (newDividerPosition > 10 && newDividerPosition < 90) { // Restrict resizing to reasonable bounds
-                setDividerPosition(newDividerPosition);
-            }
-        } catch(error) {
-            // do nothing
-        }
+        fileManagerActionsHandler.handleMouseMove(e);
     };
 
     const handleMouseUp = () => {
@@ -118,7 +109,7 @@ const FileManager = () => {
     return (
         <div className="fileManager">
             <div className="section left" style={{ width: `${dividerPosition}%` }}>
-                <FolderHierarchy folder={Root} setWorkingDirectory={setWorkingDirectory} />
+                <FolderHierarchy folder={Data.Root} setWorkingDirectory={setWorkingDirectory} />
             </div>
 
             <div className="divider" onMouseDown={handleMouseDown}></div>
