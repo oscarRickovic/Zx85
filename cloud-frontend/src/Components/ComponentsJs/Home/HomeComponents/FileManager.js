@@ -8,6 +8,7 @@ import Folder from "../../../../Classes/Entities/Folder";
 import File from "../../../../Classes/Entities/File";
 import { CiFileOn } from "react-icons/ci";
 import { FaFile } from "react-icons/fa";
+import { FaUpload } from "react-icons/fa";
 import FolderHierarchy from "./FolderHierarchy";
 import FileManagerActionsHandler from "./Actions/FileManagerActionsHandler";
 
@@ -132,8 +133,12 @@ const FileManager = () => {
                         ))}
                     </div>
                     <div className="actions">
-                        <button className="upload-btn">Upload</button>
-                        <button className="download-btn">Download</button>
+                        <div className="path-bar-icon">
+                            <FaUpload />
+                        </div>
+                        <div  className="path-bar-icon">
+                            <FaFolder />
+                        </div>
                     </div>
                 </div>
 
@@ -147,10 +152,10 @@ const FileManager = () => {
                 >
                     {isCreatingFolder ? (
                       <div className="folder">
-                      <div className="folder-icon">
-                          <FaFolder className="closeFolder" />
-                          <FaFolderOpen className="openFolder" />
-                      </div>
+                        <div className="folder-icon">
+                            <FaFolder className="closeFolder" />
+                            <FaFolderOpen className="openFolder" />
+                        </div>
                       <input
                                 type="text"
                                 value={newFolderName}
