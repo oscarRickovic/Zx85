@@ -1,5 +1,6 @@
 import Folder from "../../../../../Classes/Entities/Folder"
 import File from "../../../../../Classes/Entities/File"
+import axios from 'axios';
 export default class FileManagerActionsHandler {
     constructor(Variables, Functions) {
         this.Variables = Variables;
@@ -103,4 +104,37 @@ export default class FileManagerActionsHandler {
             // do nothing
         }
     };
+
+    handleFileUpload = async (e) => {
+        const selectedFile = e.target.files[0];  // Get the file from the input
+        if (!selectedFile) {
+            this.Functions.setUploadStatus('Please choose a file to upload');
+            return;
+        }
+        alert("working")
+
+        // Update file state with selected file
+        this.Functions.setFile(selectedFile);
+
+        const formData = new FormData();
+        formData.append('file', selectedFile);  // Append the selected file to the FormData
+
+        try {
+            this.Functions.setUploadStatus('Uploading...');
+
+            // Send the file to the backend using POST request
+            const response = await axios.post('http://localhost:5000/service/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            // If the upload is successful
+            this.Functions.setUploadStatus('File uploaded successfully!');
+            console.log(response.data);
+        } catch (error) {
+            this.Functions.setUploadStatus('Error uploading file');
+            console.error(error);
+        }
+    }
 }

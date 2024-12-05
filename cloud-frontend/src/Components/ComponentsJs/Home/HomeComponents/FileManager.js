@@ -4,8 +4,6 @@ import "../../../ComponentsCss/FilesPath.css";
 import "../../../ComponentsCss/ContextMenu.css";
 import { FaFolder } from "react-icons/fa";
 import { FaFolderOpen } from "react-icons/fa";
-import Folder from "../../../../Classes/Entities/Folder";
-import File from "../../../../Classes/Entities/File";
 import { CiFileOn } from "react-icons/ci";
 import { FaFile } from "react-icons/fa";
 import { MdOutlineCloudUpload } from "react-icons/md";
@@ -28,6 +26,8 @@ const FileManager = () => {
     const [isRenaming, setIsRenaming] = useState(false);
     const [newName, setNewName] = useState(false);
     const [iconCreatingClicked, setIconCreatingClicked] = useState(false);
+    const [file, setFile] = useState(null);  // State to hold the file
+    const [uploadStatus, setUploadStatus] = useState('');  // To display upload status
 
     // create Variables and functions for FileManagerActionsHndler
     const Variables = {
@@ -42,6 +42,8 @@ const FileManager = () => {
         newFolderName,
         isRenaming,
         newName,
+        file,
+        uploadStatus
     }
 
     const Functions = {
@@ -56,6 +58,8 @@ const FileManager = () => {
         setNewFolderName,
         setIsRenaming,
         setNewName,
+        setFile,
+        setUploadStatus
     }
 
     // connect to FileManagerActionsHandler.
@@ -126,6 +130,12 @@ const FileManager = () => {
         setIsCreatingFolder(true) 
     }
 
+    
+    
+    const handleFileUpload = async (e) => {
+        await fileManagerActionsHandler.handleFileUpload(e);
+    };    
+
     return (
         <div className="fileManager">
             <div className="section left" style={{ width: `${dividerPosition}%` }}>
@@ -153,25 +163,23 @@ const FileManager = () => {
                         ))}
                     </div>
                     <div className="actions">
-                        <div 
-                            className="path-bar-icon"
-                            style={{ position: "relative", display: "inline-block", cursor: "pointer" }} 
-                        >
+                        <div className="path-bar-icon" style={{ position: "relative", display: "inline-block", cursor: "pointer" }}>
                             <MdOutlineCloudUpload size={24} />
                             <input
                                 type="file"
-                                onChange={(e)=>{console.log(e.target.files[0])}}
+                                onChange={handleFileUpload}
                                 style={{
                                     position: "absolute",
                                     top: 0,
                                     left: 0,
                                     width: "100%",
                                     height: "100%",
-                                    cursor : "poiter",
-                                    opacity: 0,
+                                    cursor: "pointer",
+                                    opacity: 0, // Hide input but keep it clickable
                                 }}
                             />
                         </div>
+
                         <div  
                             className="path-bar-icon"  
                             onClick={handleIconCreate}>
