@@ -82,6 +82,45 @@ export default class Folder {
         return { res: true, message: "Deleted successfully" };
     }
 
+
+    setName(newName) {
+        if (!newName) {
+            return false;
+        }
+        if (this.parent) {
+            const validation = this.parent.isNameUnique(newName);
+            if (!validation.res) {
+                return false
+            }
+            this.name = newName;
+            return true; 
+        }
+        return false;
+    }
+
+    setPath(){
+        this.path = this.parent ? `${this.parent.path}/${this.name}` : this.name;
+    }
+
+    rename(newName) {
+        if(this.setName(newName)) {
+            this.setPath();
+            for(let folder of this.subFolders) {
+                if(folder instanceof Folder) {
+                    folder.setPath();
+                }
+            }
+            for(let file of this.subFiles) {
+                if(file instanceof File) {
+                    file.setPath();
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+
     getPath() {
         const path = [];
         let currentFolder = this;

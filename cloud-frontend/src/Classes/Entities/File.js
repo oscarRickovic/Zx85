@@ -39,4 +39,27 @@ export default class File {
 
         return { res: true, message: "File deleted successfully" };
     }
+
+    setPath(){
+        this.path = this.parentFolder ? `${this.parentFolder.path}/${this.name}` : this.name;
+    }
+
+    setName(newName){
+        if (!newName) {
+            return false;
+        }
+        if (this.parentFolder) {
+            const validation = this.parentFolder.isNameUnique(newName);
+            if (!validation.res) {
+                return false
+            }
+            this.name = newName;
+            return true; 
+        }
+        return false;
+    }
+
+    rename(newName) {
+        this.setName(newName) && this.setPath();
+    }
 }

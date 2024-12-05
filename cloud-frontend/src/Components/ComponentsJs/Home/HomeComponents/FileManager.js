@@ -25,6 +25,9 @@ const FileManager = () => {
     const [isEmptySpace, setIsEmptySpace] = useState(false);
     const [isCreatingFolder, setIsCreatingFolder] = useState(false);
     const [newFolderName, setNewFolderName] = useState("");
+    const [isRenaming, setIsRenaming] = useState(false);
+    const [newName, setNewName] = useState(false);
+    const [iconCreatingClicked, setIconCreatingClicked] = useState(false);
 
     // create Variables and functions for FileManagerActionsHndler
     const Variables = {
@@ -36,7 +39,9 @@ const FileManager = () => {
         selectedItem,
         isEmptySpace,
         isCreatingFolder,
-        newFolderName
+        newFolderName,
+        isRenaming,
+        newName,
     }
 
     const Functions = {
@@ -48,7 +53,9 @@ const FileManager = () => {
         setSelectedItem,
         setIsEmptySpace,
         setIsCreatingFolder,
-        setNewFolderName
+        setNewFolderName,
+        setIsRenaming,
+        setNewName,
     }
 
     // connect to FileManagerActionsHandler.
@@ -85,9 +92,17 @@ const FileManager = () => {
         setNewFolderName(e.target.value);
     };
 
+    const handleRenamingNameTyping = (e) => {
+        setNewName(e.target.value);
+    }
+
     const handleNewFolderCreation = (e) => {
         fileManagerActionsHandler.handleNewFolderCreation(e);
     };
+
+    const handleRenaming = (e) => {
+        fileManagerActionsHandler.handleRenaming(e)
+    }
 
     const handleAction = (action) => {
         fileManagerActionsHandler.handleAction(action);
@@ -107,6 +122,7 @@ const FileManager = () => {
         window.addEventListener("mouseup", handleMouseUp);
     };
     const handleIconCreate = () => {
+        setIconCreatingClicked(true);
         setIsCreatingFolder(true) 
     }
 
@@ -188,7 +204,20 @@ const FileManager = () => {
                                         <FaFolder className="closeFolder" />
                                         <FaFolderOpen className="openFolder" />
                                     </div>
-                                    <div className="folder-name">{subFolder.name}</div>
+                                    {
+                                        isRenaming && subFolder.name == selectedItem.name ? 
+                                        (
+                                            <input
+                                                type="text"
+                                                maxLength={20}
+                                                value={newName}
+                                                onChange={handleRenamingNameTyping}
+                                                onKeyDown={handleRenaming}
+                                                autoFocus
+                                            />
+                                        ) :
+                                        <div className="folder-name">{subFolder.name}</div> 
+                                    }
                                 </div>
                             ))}
 

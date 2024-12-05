@@ -31,7 +31,9 @@ export default class FileManagerActionsHandler {
         if (this.Variables.menuVisible && !e.target.closest(".context-menu")) {
             this.Functions.setMenuVisible(false);
         }
-        this.Functions.setSelectedItem(null)
+        if(! this.Variables.isRenaming) {
+            this.Functions.setSelectedItem(null)
+        }
     };
 
     handleCreateAction = () => {
@@ -53,6 +55,24 @@ export default class FileManagerActionsHandler {
         }
     };
 
+    handleRenameInput = () => {
+        this.Functions.setIsRenaming(true);
+        this.Functions.setNewName("");
+        this.Functions.setMenuVisible(false);
+    } 
+
+    handleRenaming = (e) => {
+        if (e.key === "Enter" && this.Variables.newName.trim()) {
+            if(this.Variables.newName.length > 20) return;
+            this.Variables.selectedItem.rename(this.Variables.newName);
+            this.Functions.setIsRenaming(false);
+            this.Functions.setNewName("");
+        } else if (e.key === "Escape") {
+            this.Functions.setIsRenaming(false);
+            this.Functions.setNewName("");
+        }
+    }
+
     handleAction = (action) => {
         if (action === "Create") {
             this.handleCreateAction();
@@ -62,6 +82,9 @@ export default class FileManagerActionsHandler {
         }
         if(action == "Open") {
             this.Functions.setWorkingDirectory(this.Variables.selectedItem)
+        }
+        if(action == "Rename") {
+            this.handleRenameInput();
         }
         // Other actions here
         this.Functions.setMenuVisible(false);
