@@ -67,9 +67,11 @@ export default class FileManagerActionsHandler {
             this.Variables.selectedItem.rename(this.Variables.newName);
             this.Functions.setIsRenaming(false);
             this.Functions.setNewName("");
+            this.Functions.setSelectedItem(null);
         } else if (e.key === "Escape") {
             this.Functions.setIsRenaming(false);
             this.Functions.setNewName("");
+            this.Functions.setSelectedItem(null);
         }
     }
 

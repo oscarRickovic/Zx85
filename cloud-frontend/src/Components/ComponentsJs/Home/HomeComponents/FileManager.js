@@ -233,7 +233,20 @@ const FileManager = () => {
                                         <FaFile className="clickFile" />
                                         <CiFileOn className="noClickFile" />
                                     </div>
-                                    <div className="file-name">{subFile.name}</div>
+                                    {
+                                        isRenaming && subFile.name == selectedItem.name ? 
+                                        (
+                                            <input
+                                                type="text"
+                                                maxLength={20}
+                                                value={newName}
+                                                onChange={handleRenamingNameTyping}
+                                                onKeyDown={handleRenaming}
+                                                autoFocus
+                                            />
+                                        ) :
+                                        <div className="folder-name">{subFile.name}</div> 
+                                    }
                                 </div>
                             ))}
                         </>
