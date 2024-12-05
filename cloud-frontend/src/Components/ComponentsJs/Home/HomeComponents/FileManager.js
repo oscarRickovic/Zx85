@@ -153,8 +153,24 @@ const FileManager = () => {
                         ))}
                     </div>
                     <div className="actions">
-                        <div className="path-bar-icon">
-                            <MdOutlineCloudUpload/>
+                        <div 
+                            className="path-bar-icon"
+                            style={{ position: "relative", display: "inline-block", cursor: "pointer" }} 
+                        >
+                            <MdOutlineCloudUpload size={24} />
+                            <input
+                                type="file"
+                                onChange={(e)=>{console.log(e.target.files[0])}}
+                                style={{
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    width: "100%",
+                                    height: "100%",
+                                    cursor : "poiter",
+                                    opacity: 0,
+                                }}
+                            />
                         </div>
                         <div  
                             className="path-bar-icon"  
