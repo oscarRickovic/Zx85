@@ -15,7 +15,8 @@ import FileManagerActionsHandler from "./Actions/FileManagerActionsHandler";
 const FileManager = () => {
     // All useStates variables, setters.
     const Data = FileManagerActionsHandler.getData(); 
-    const [workingDirectory, setWorkingDirectory] = useState(Data.Root);
+    const [Root, setRoot] = useState(Data.Root);
+    const [workingDirectory, setWorkingDirectory] = useState(Root);
     const [dividerPosition, setDividerPosition] = useState(20);
     const [menuVisible, setMenuVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
@@ -26,6 +27,7 @@ const FileManager = () => {
 
     // create Variables and functions for FileManagerActionsHndler
     const Variables = {
+        Root,
         workingDirectory,
         dividerPosition,
         menuVisible,
@@ -37,6 +39,7 @@ const FileManager = () => {
     }
 
     const Functions = {
+        setRoot,
         setWorkingDirectory,
         setDividerPosition,
         setMenuVisible,
@@ -106,7 +109,7 @@ const FileManager = () => {
     return (
         <div className="fileManager">
             <div className="section left" style={{ width: `${dividerPosition}%` }}>
-                <FolderHierarchy folder={Data.Root} setWorkingDirectory={setWorkingDirectory} />
+                <FolderHierarchy folder={Root} setWorkingDirectory={setWorkingDirectory} />
             </div>
 
             <div className="divider" onMouseDown={handleMouseDown}></div>

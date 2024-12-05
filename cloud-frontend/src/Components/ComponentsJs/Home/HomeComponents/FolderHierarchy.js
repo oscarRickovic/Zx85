@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaFolder } from "react-icons/fa";
 import { CiFileOn } from "react-icons/ci";
 import "../../../ComponentsCss/FolderHierarchy.css";
@@ -6,7 +6,13 @@ import "../../../ComponentsCss/FolderHierarchy.css";
 const FolderHierarchy = ({ folder, setWorkingDirectory }) => {
     const [isOpen, setIsOpen] = useState(false); // Track folder toggle state
 
-    // Toggle folder open/close
+    /*useEffect(() => {
+        console.log("FolderHierarchy updated!");
+        console.log("Current Working Directory:", folder);
+        console.log("Subfolders:", folder.subFolders);
+    }, [folder]); // Dependency array ensures it runs when 'folder' changes
+    // Toggle folder open/close*/
+
     const toggleFolder = () => {
         setIsOpen(!isOpen);
     };
