@@ -73,6 +73,12 @@
     height: 100%; /* Make them fill the grid cell */
 }
 
+.path-bar-icon:hover{
+    font-size: 1.7rem;
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

@@ -106,6 +106,9 @@ const FileManager = () => {
         window.addEventListener("mousemove", handleMouseMove);
         window.addEventListener("mouseup", handleMouseUp);
     };
+    const handleIconCreate = () => {
+        setIsCreatingFolder(true) 
+    }
 
     return (
         <div className="fileManager">
@@ -117,10 +120,7 @@ const FileManager = () => {
             <div 
               className="section right" 
               style={{ width: `${100 - dividerPosition}%` }}
-              onClick={()=> {
-                if(!menuVisible) setIsCreatingFolder(false)
-              }
-            }>
+            >
                 <div className="filesPath">
                     <div className="breadcrumb">
                         {workingDirectory.getPath().map((folder, index) => (
@@ -140,8 +140,10 @@ const FileManager = () => {
                         <div className="path-bar-icon">
                             <MdOutlineCloudUpload/>
                         </div>
-                        <div  className="path-bar-icon">
-                            <VscNewFolder />
+                        <div  
+                            className="path-bar-icon"  
+                            onClick={handleIconCreate}>
+                                <VscNewFolder/>
                         </div>
                     </div>
                 </div>
@@ -160,7 +162,7 @@ const FileManager = () => {
                             <FaFolder className="closeFolder" />
                             <FaFolderOpen className="openFolder" />
                         </div>
-                      <input
+                        <input
                                 type="text"
                                 maxLength={20}
                                 value={newFolderName}
