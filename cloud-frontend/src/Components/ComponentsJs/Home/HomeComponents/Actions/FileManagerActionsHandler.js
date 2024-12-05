@@ -42,6 +42,7 @@ export default class FileManagerActionsHandler {
 
     handleNewFolderCreation = (e) => {
         if (e.key === "Enter" && this.Variables.newFolderName.trim()) {
+            if(this.Variables.newFolderName.length > 20) return;
             const newFolder = new Folder(this.Variables.newFolderName.trim(), this.Variables.workingDirectory);
             this.Variables.workingDirectory.addFolder(newFolder);
             this.Functions.setIsCreatingFolder(false);

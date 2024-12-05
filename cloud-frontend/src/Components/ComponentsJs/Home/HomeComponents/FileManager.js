@@ -162,6 +162,7 @@ const FileManager = () => {
                         </div>
                       <input
                                 type="text"
+                                maxLength={20}
                                 value={newFolderName}
                                 onChange={handleNewFolderNameChange}
                                 onKeyDown={handleNewFolderCreation}
