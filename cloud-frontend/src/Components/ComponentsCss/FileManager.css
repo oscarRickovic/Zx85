@@ -149,7 +149,9 @@
     font-size: 0.9rem;
     font-weight: 500;
     color: #333;
-    word-wrap: break-word;
+    word-wrap: break-word; /* Breaks words if they are too long */
+    word-break: break-word; /* Ensures word-breaking works across all browsers */
+    overflow-wrap: break-word; /* Additional compatibility */
 }
 
 /* Folder icon */

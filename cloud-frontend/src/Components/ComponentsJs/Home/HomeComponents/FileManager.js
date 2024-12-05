@@ -4,8 +4,6 @@ import "../../../ComponentsCss/FilesPath.css";
 import "../../../ComponentsCss/ContextMenu.css";
 import { FaFolder } from "react-icons/fa";
 import { FaFolderOpen } from "react-icons/fa";
-import Folder from "../../../../Classes/Entities/Folder";
-import File from "../../../../Classes/Entities/File";
 import { CiFileOn } from "react-icons/ci";
 import { FaFile } from "react-icons/fa";
 import { MdOutlineCloudUpload } from "react-icons/md";
@@ -25,6 +23,11 @@ const FileManager = () => {
     const [isEmptySpace, setIsEmptySpace] = useState(false);
     const [isCreatingFolder, setIsCreatingFolder] = useState(false);
     const [newFolderName, setNewFolderName] = useState("");
+    const [isRenaming, setIsRenaming] = useState(false);
+    const [newName, setNewName] = useState(false);
+    const [iconCreatingClicked, setIconCreatingClicked] = useState(false);
+    const [file, setFile] = useState(null);  // State to hold the file
+    const [uploadStatus, setUploadStatus] = useState('');  // To display upload status
 
     // create Variables and functions for FileManagerActionsHndler
     const Variables = {
@@ -36,7 +39,11 @@ const FileManager = () => {
         selectedItem,
         isEmptySpace,
         isCreatingFolder,
-        newFolderName
+        newFolderName,
+        isRenaming,
+        newName,
+        file,
+        uploadStatus
     }
 
     const Functions = {
@@ -48,7 +55,11 @@ const FileManager = () => {
         setSelectedItem,
         setIsEmptySpace,
         setIsCreatingFolder,
-        setNewFolderName
+        setNewFolderName,
+        setIsRenaming,
+        setNewName,
+        setFile,
+        setUploadStatus
     }
 
     // connect to FileManagerActionsHandler.
@@ -85,9 +96,17 @@ const FileManager = () => {
         setNewFolderName(e.target.value);
     };
 
+    const handleRenamingNameTyping = (e) => {
+        setNewName(e.target.value);
+    }
+
     const handleNewFolderCreation = (e) => {
         fileManagerActionsHandler.handleNewFolderCreation(e);
     };
+
+    const handleRenaming = (e) => {
+        fileManagerActionsHandler.handleRenaming(e)
+    }
 
     const handleAction = (action) => {
         fileManagerActionsHandler.handleAction(action);
@@ -106,6 +125,16 @@ const FileManager = () => {
         window.addEventListener("mousemove", handleMouseMove);
         window.addEventListener("mouseup", handleMouseUp);
     };
+    const handleIconCreate = () => {
+        setIconCreatingClicked(true);
+        setIsCreatingFolder(true) 
+    }
+
+    
+    
+    const handleFileUpload = async (e) => {
+        await fileManagerActionsHandler.handleFileUpload(e);
+    };    
 
     return (
         <div className="fileManager">
@@ -117,10 +146,7 @@ const FileManager = () => {
             <div 
               className="section right" 
               style={{ width: `${100 - dividerPosition}%` }}
-              onClick={()=> {
-                if(!menuVisible) setIsCreatingFolder(false)
-              }
-            }>
+            >
                 <div className="filesPath">
                     <div className="breadcrumb">
                         {workingDirectory.getPath().map((folder, index) => (
@@ -137,11 +163,27 @@ const FileManager = () => {
                         ))}
                     </div>
                     <div className="actions">
-                        <div className="path-bar-icon">
-                            <MdOutlineCloudUpload/>
+                        <div className="path-bar-icon" style={{ position: "relative", display: "inline-block", cursor: "pointer" }}>
+                            <MdOutlineCloudUpload size={24} />
+                            <input
+                                type="file"
+                                onChange={handleFileUpload}
+                                style={{
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    width: "100%",
+                                    height: "100%",
+                                    cursor: "pointer",
+                                    opacity: 0, // Hide input but keep it clickable
+                                }}
+                            />
                         </div>
-                        <div  className="path-bar-icon">
-                            <VscNewFolder />
+
+                        <div  
+                            className="path-bar-icon"  
+                            onClick={handleIconCreate}>
+                                <VscNewFolder/>
                         </div>
                     </div>
                 </div>
@@ -160,8 +202,9 @@ const FileManager = () => {
                             <FaFolder className="closeFolder" />
                             <FaFolderOpen className="openFolder" />
                         </div>
-                      <input
+                        <input
                                 type="text"
+                                maxLength={20}
                                 value={newFolderName}
                                 onChange={handleNewFolderNameChange}
                                 onKeyDown={handleNewFolderCreation}
@@ -185,7 +228,20 @@ const FileManager = () => {
                                         <FaFolder className="closeFolder" />
                                         <FaFolderOpen className="openFolder" />
                                     </div>
-                                    <div className="folder-name">{subFolder.name}</div>
+                                    {
+                                        isRenaming && subFolder.name == selectedItem.name ? 
+                                        (
+                                            <input
+                                                type="text"
+                                                maxLength={20}
+                                                value={newName}
+                                                onChange={handleRenamingNameTyping}
+                                                onKeyDown={handleRenaming}
+                                                autoFocus
+                                            />
+                                        ) :
+                                        <div className="folder-name">{subFolder.name}</div> 
+                                    }
                                 </div>
                             ))}
 
@@ -201,7 +257,20 @@ const FileManager = () => {
                                         <FaFile className="clickFile" />
                                         <CiFileOn className="noClickFile" />
                                     </div>
-                                    <div className="file-name">{subFile.name}</div>
+                                    {
+                                        isRenaming && subFile.name == selectedItem.name ? 
+                                        (
+                                            <input
+                                                type="text"
+                                                maxLength={20}
+                                                value={newName}
+                                                onChange={handleRenamingNameTyping}
+                                                onKeyDown={handleRenaming}
+                                                autoFocus
+                                            />
+                                        ) :
+                                        <div className="folder-name">{subFile.name}</div> 
+                                    }
                                 </div>
                             ))}
                         </>

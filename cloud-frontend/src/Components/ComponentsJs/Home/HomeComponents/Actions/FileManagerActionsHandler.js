@@ -1,5 +1,6 @@
 import Folder from "../../../../../Classes/Entities/Folder"
 import File from "../../../../../Classes/Entities/File"
+import axios from 'axios';
 export default class FileManagerActionsHandler {
     constructor(Variables, Functions) {
         this.Variables = Variables;
@@ -31,7 +32,9 @@ export default class FileManagerActionsHandler {
         if (this.Variables.menuVisible && !e.target.closest(".context-menu")) {
             this.Functions.setMenuVisible(false);
         }
-        this.Functions.setSelectedItem(null)
+        if(! this.Variables.isRenaming) {
+            this.Functions.setSelectedItem(null)
+        }
     };
 
     handleCreateAction = () => {
@@ -42,6 +45,7 @@ export default class FileManagerActionsHandler {
 
     handleNewFolderCreation = (e) => {
         if (e.key === "Enter" && this.Variables.newFolderName.trim()) {
+            if(this.Variables.newFolderName.length > 20) return;
             const newFolder = new Folder(this.Variables.newFolderName.trim(), this.Variables.workingDirectory);
             this.Variables.workingDirectory.addFolder(newFolder);
             this.Functions.setIsCreatingFolder(false);
@@ -52,6 +56,26 @@ export default class FileManagerActionsHandler {
         }
     };
 
+    handleRenameInput = () => {
+        this.Functions.setIsRenaming(true);
+        this.Functions.setNewName("");
+        this.Functions.setMenuVisible(false);
+    } 
+
+    handleRenaming = (e) => {
+        if (e.key === "Enter" && this.Variables.newName.trim()) {
+            if(this.Variables.newName.length > 20) return;
+            this.Variables.selectedItem.rename(this.Variables.newName);
+            this.Functions.setIsRenaming(false);
+            this.Functions.setNewName("");
+            this.Functions.setSelectedItem(null);
+        } else if (e.key === "Escape") {
+            this.Functions.setIsRenaming(false);
+            this.Functions.setNewName("");
+            this.Functions.setSelectedItem(null);
+        }
+    }
+
     handleAction = (action) => {
         if (action === "Create") {
             this.handleCreateAction();
@@ -61,6 +85,9 @@ export default class FileManagerActionsHandler {
         }
         if(action == "Open") {
             this.Functions.setWorkingDirectory(this.Variables.selectedItem)
+        }
+        if(action == "Rename") {
+            this.handleRenameInput();
         }
         // Other actions here
         this.Functions.setMenuVisible(false);
@@ -77,4 +104,37 @@ export default class FileManagerActionsHandler {
             // do nothing
         }
     };
+
+    handleFileUpload = async (e) => {
+        const selectedFile = e.target.files[0];  // Get the file from the input
+        if (!selectedFile) {
+            this.Functions.setUploadStatus('Please choose a file to upload');
+            return;
+        }
+        alert("working")
+
+        // Update file state with selected file
+        this.Functions.setFile(selectedFile);
+
+        const formData = new FormData();
+        formData.append('file', selectedFile);  // Append the selected file to the FormData
+
+        try {
+            this.Functions.setUploadStatus('Uploading...');
+
+            // Send the file to the backend using POST request
+            const response = await axios.post('http://localhost:5000/service/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            // If the upload is successful
+            this.Functions.setUploadStatus('File uploaded successfully!');
+            console.log(response.data);
+        } catch (error) {
+            this.Functions.setUploadStatus('Error uploading file');
+            console.error(error);
+        }
+    }
 }

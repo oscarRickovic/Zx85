@@ -4,7 +4,8 @@ const authMiddleware = require('../middleware/authMiddleware');
 const {
   registerUser,
   loginUser,
-  verifyCode
+  verifyCode,
+  homeAccess
 } = require('../controllers/authControllers')
 
 const router = express.Router();
@@ -16,9 +17,6 @@ router.post('/login', loginUser);
 
 router.post('/verify-code', verifyCode);
 
-// Dashboard route with authMiddleware to ensure JWT token is verified
-router.get('/home', authMiddleware, (req, res) => {
-  res.json({ message: `Welcome, user ${req.user.id}` });
-});
+router.get('/home', authMiddleware, homeAccess);
 
 module.exports = router;
