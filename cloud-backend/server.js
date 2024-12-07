@@ -2,6 +2,7 @@ const express = require('express');
 const sequelize = require('./database/db'); // MySQL connection
 const authRoutes = require('./routes/auth');
 const uploadRoute = require('./routes/upload')
+const fileRoutes = require('./routes/fileRoutes')
 const cors = require('cors');
 
 require('dotenv').config();
@@ -14,6 +15,8 @@ app.use(express.json()); // Use built-in Express JSON parser
 app.use('/api/auth', authRoutes);
 
 app.use('/service', uploadRoute);
+
+app.use('/service', fileRoutes);
 
 //Database
 sequelize.sync().then(() => console.log('Database synced'));
