@@ -68,6 +68,18 @@ const FileManager = () => {
     // useEffects
     useEffect(() => {
         isResponsive();
+
+        const fetchData = async () => {
+            try {
+                const data = await FileManagerActionsHandler.getData();
+                setRoot(data.Root);
+                setWorkingDirectory(data.Root);
+            } catch (error) {
+                console.error("Error initializing file manager:", error);
+            }
+        };
+
+        fetchData();
     }, []);
 
     useEffect(() => {
@@ -129,12 +141,16 @@ const FileManager = () => {
         setIconCreatingClicked(true);
         setIsCreatingFolder(true) 
     }
-
-    
     
     const handleFileUpload = async (e) => {
         await fileManagerActionsHandler.handleFileUpload(e);
     };    
+
+
+
+    if (!Root) {
+        return <div>Loading...</div>; // Show loading message until Root is fetched
+    }
 
     return (
         <div className="fileManager">
