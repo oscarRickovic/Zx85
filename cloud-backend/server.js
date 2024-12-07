@@ -3,6 +3,7 @@ const sequelize = require('./database/db'); // MySQL connection
 const authRoutes = require('./routes/auth');
 const uploadRoute = require('./routes/upload')
 const fileRoutes = require('./routes/downloadFile')
+const StorageStructureRoute = require('./routes/StorageStructureRoute');
 const cors = require('cors');
 
 require('dotenv').config();
@@ -13,6 +14,8 @@ app.use(express.json()); // Use built-in Express JSON parser
 
 // Routes
 app.use('/api/auth', authRoutes);
+
+app.use("/api/storage", StorageStructureRoute); 
 
 app.use('/service', uploadRoute);
 

@@ -6,19 +6,38 @@ export default class FileManagerActionsHandler {
         this.Variables = Variables;
         this.Functions = Functions;
     }
-    static getData() {
-        // Initial setup
-        let Root = new Folder();
-        let Home = new Folder("Home", Root);
-        let Documents = new Folder("Documents", Root);
-        let Desktop = new Folder("Desktop", Root);
-        let music = new Folder("music", Documents);
-        let abdelhadi = new File("abdelhadi", Desktop);
-        let abdelhadi2 = new File("1733591927264.pdf", Root);
-        return {
-            Root, Home, Documents, Desktop, music, abdelhadi, abdelhadi2
+    static async getData() {
+        const Root = new Folder(); // Create the Root folder
+        const folderTree = await this.fetchFolderStructure(); // Fetch folder structure from the backend
+        this.populateFolderTree(folderTree, Root); // Populate the tree starting from Root
+        return { Root };
+    }
+
+    static async fetchFolderStructure() {
+        try {
+            const response = await axios.get('http://localhost:5000/api/storage/structure');
+            return response.data; // Return the storage structure
+        } catch (error) {
+            console.error("Error fetching Storage structure:", error);
+            return null; // Return null or handle the error appropriately
         }
     }
+
+    static populateFolderTree(treeNode, parentFolder) {
+        if (!treeNode) return;
+    
+        // Iterate through children of the current treeNode
+        treeNode.children.forEach(child => {
+            if (child.type === 'folder') {
+                const folder = new Folder(child.name, parentFolder);
+                parentFolder.addFolder(folder); // Add the folder to the parent
+                this.populateFolderTree(child, folder); // Recursively populate the folder
+            } else if (child.type === 'file') {
+                const file = new File(child.name, parentFolder);
+                parentFolder.addFile(file); // Add the file to the parent
+            }
+        });
+    }    
 
     handleRightClick = (e, item = null, emptySpace = false) => {
         e.preventDefault();
@@ -83,8 +102,13 @@ export default class FileManagerActionsHandler {
         if (action === "Delete") {
           this.Variables.selectedItem.delete();
         }
-        if(action == "Open") {
-            this.Functions.setWorkingDirectory(this.Variables.selectedItem)
+        if (action === "Open") {
+            const selectedFolder = this.Variables.selectedItem;
+            if (selectedFolder && selectedFolder.isDir) {
+                this.Functions.setWorkingDirectory(selectedFolder);
+            } else {
+                alert("Cannot open a file. Please select a folder.");
+            }
         }
         if(action == "Rename") {
             this.handleRenameInput();
