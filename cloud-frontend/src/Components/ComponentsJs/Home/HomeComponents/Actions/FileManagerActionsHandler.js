@@ -14,7 +14,7 @@ export default class FileManagerActionsHandler {
         let Desktop = new Folder("Desktop", Root);
         let music = new Folder("music", Documents);
         let abdelhadi = new File("abdelhadi", Desktop);
-        let abdelhadi2 = new File("abdelhadi", Root);
+        let abdelhadi2 = new File("1733591927264.pdf", Root);
         return {
             Root, Home, Documents, Desktop, music, abdelhadi, abdelhadi2
         }
@@ -89,6 +89,9 @@ export default class FileManagerActionsHandler {
         if(action == "Rename") {
             this.handleRenameInput();
         }
+        if (action === "Download") {
+            this.handleDownload(); 
+        }
         // Other actions here
         this.Functions.setMenuVisible(false);
     };
@@ -137,4 +140,41 @@ export default class FileManagerActionsHandler {
             console.error(error);
         }
     }
+
+    handleDownload = async () => {
+        if (!this.Variables.selectedItem) {
+            alert("No file selected for download.");
+            return;
+        }
+    
+        if (this.Variables.selectedItem.isDir) {
+            alert("Cannot download a folder. Please select a file.");
+            return;
+        }
+    
+        try {
+            console.log("Selected Item Path: ", this.Variables.selectedItem.path);
+
+            const response = await axios.get(`http://localhost:5000/service/download`, {
+                params: { path: this.Variables.selectedItem.path }, // Send the file path to the backend
+                responseType: 'blob', // Ensure the response is handled as a binary file
+            });
+
+            console.log("Response: ", response);
+    
+            // Create a link to download the file
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", this.Variables.selectedItem.name); // Set the file name
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error("Error downloading the file:", error);
+            alert("Failed to download the file.");
+        }
+    };
+    
+    
 }

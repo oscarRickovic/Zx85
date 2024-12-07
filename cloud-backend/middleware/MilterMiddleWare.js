@@ -9,7 +9,7 @@ const path = require('path'); // Add this line to import path module
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       // Set file destination directory
-      cb(null, '/home/oscar/Desktop/Zx85/Storage');
+      cb(null, '/home/tay/Desktop/Zx85/Storage');
     },
     filename: (req, file, cb) => {
       // Set file name to be original with a timestamp
