@@ -14,7 +14,7 @@ export default class FileManagerActionsHandler {
         let Desktop = new Folder("Desktop", Root);
         let music = new Folder("music", Documents);
         let abdelhadi = new File("abdelhadi", Desktop);
-        let abdelhadi2 = new File("abdelhadi", Root);
+        let abdelhadi2 = new File("1733591927264.pdf", Root);
         return {
             Root, Home, Documents, Desktop, music, abdelhadi, abdelhadi2
         }
@@ -153,10 +153,14 @@ export default class FileManagerActionsHandler {
         }
     
         try {
+            console.log("Selected Item Path: ", this.Variables.selectedItem.path);
+
             const response = await axios.get(`http://localhost:5000/service/download`, {
                 params: { path: this.Variables.selectedItem.path }, // Send the file path to the backend
                 responseType: 'blob', // Ensure the response is handled as a binary file
             });
+
+            console.log("Response: ", response);
     
             // Create a link to download the file
             const url = window.URL.createObjectURL(new Blob([response.data]));

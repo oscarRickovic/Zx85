@@ -2,7 +2,7 @@ const express = require('express');
 const sequelize = require('./database/db'); // MySQL connection
 const authRoutes = require('./routes/auth');
 const uploadRoute = require('./routes/upload')
-const fileRoutes = require('./routes/fileRoutes')
+const fileRoutes = require('./routes/downloadFile')
 const cors = require('cors');
 
 require('dotenv').config();

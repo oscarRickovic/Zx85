@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const fileController = require("../controllers/FileControllers");
+const fileController = require("../controllers/DownloadFileController");
 
-// Define the download route
 router.get("/download", fileController.downloadFile);
 
 module.exports = router;
