@@ -65,7 +65,7 @@ export default class FileManagerActionsHandler {
     handleNewFolderCreation = async (e) => {
         if (e.key === "Enter" && this.Variables.newFolderName.trim()) {
             if(this.Variables.newFolderName.length > 20) return;
-            let folderPath = this.Variables.workingDirectory.path + this.Variables.newFolderName.trim();
+            let folderPath = this.Variables.workingDirectory.path + "/" + this.Variables.newFolderName.trim();
             try {
                 const response = await axios.post("http://localhost:5000/api/storage/createFolder", {
                     folderPath, // Pass folder path as the body

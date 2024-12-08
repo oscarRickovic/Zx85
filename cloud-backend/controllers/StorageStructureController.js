@@ -36,7 +36,7 @@ const getFolderStructure = (req, res) => {
 
 
 const createFolder = async (req, res) => {
-    const STORAGE_DIR = "/home/oscar/Desktop/Zx85/Storage"
+    const STORAGE_DIR = path.join(__dirname, "..", "..", "Storage")
     const { folderPath } = req.body;
 
     if (!folderPath) {
