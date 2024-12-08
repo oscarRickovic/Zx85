@@ -302,19 +302,22 @@ const FileManager = () => {
                             {isEmptySpace ? (
                                 <>
                                     <li>
-                                    <input
-                                        type="file"
-                                        onChange={handleFileUpload}
-                                        style={{
-                                            position: "absolute",
-                                            top: 0,
-                                            left: 0,
-                                            width: "100%",
-                                            height: "100%",
-                                            cursor: "pointer",
-                                            opacity: 0, // Hide input but keep it clickable
-                                        }}/>
-                                        upload
+                                        <label style={{ position: "relative", cursor: "pointer" }}>
+                                            <span>Upload</span>
+                                            <input
+                                                type="file"
+                                                onChange={handleFileUpload}
+                                                style={{
+                                                    position: "absolute",
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    cursor: "pointer",
+                                                    opacity: 0, // Hidden but functional
+                                                }}
+                                            />
+                                        </label>
                                     </li>
                                     <li onClick={() => handleAction("Create")}>New Folder</li>
                                 </>
