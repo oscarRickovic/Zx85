@@ -1,38 +1,43 @@
 const multer = require('multer');
-const express = require('express');
-const authMiddleware = require('../middleware/authMiddleware');
-const uploadFunction = require("../controllers/UploadController")
-const multerInstance = multer({ dest: 'uploads/' });
-const router = express.Router();
-const path = require('path'); // Add this line to import path module
-// Set up file storage configuration
+const path = require('path');
+const { resolveFilePath } = require('../utils/fileUtils'); // Import the utility function
+
+require('dotenv').config();
+
+// Configure multer storage
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      // Set file destination directory
-      cb(null, '/home/tay/Desktop/Zx85/Storage');
+        try {
+            const folderPath = req.body.folderPath; // Default to root
+            console.log("request file:", req.body);
+            const resolvedFolderPath = resolveFilePath(folderPath); // Resolve path
+            console.log("RESOLVED PATH: ", resolvedFolderPath);
+
+            cb(null, resolvedFolderPath);
+        } catch (error) {
+            cb(new Error('Invalid folder path'));
+        }
     },
     filename: (req, file, cb) => {
-      // Set file name to be original with a timestamp
-      cb(null, Date.now() + path.extname(file.originalname));
+        cb(null, Date.now() + path.extname(file.originalname)); // Timestamp filenames
     },
-  });
-  
-  // Set up file upload middleware
+});
+
+// Configure multer upload instance
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 10 * 1024 * 1024 }, // Max file size of 10MB
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max size
     fileFilter: (req, file, cb) => {
-      // Accept different types of files
-      const allowedTypes = /pdf|jpeg|jpg|png|gif|txt|js|css|html|mp4|webm|avi/;
-      const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-      const mimetype = allowedTypes.test(file.mimetype);
-  
-      if (extname && mimetype) {
-        return cb(null, true);
-      } else {
-        return cb(new Error('Invalid file type. Only PDFs, images, videos, text, and JS files are allowed.'));
-      }
-    },
-})
+        const allowedTypes = /pdf|jpeg|jpg|png|gif|txt|js|css|html|mp4|webm|avi/;
+        const isValid = allowedTypes.test(path.extname(file.originalname).toLowerCase()) &&
+                        allowedTypes.test(file.mimetype);
 
-module.exports = upload
+        if (isValid) {
+            cb(null, true);
+        } else {
+            cb(new Error('Invalid file type.'));
+        }
+    },
+});
+
+module.exports = upload;
