@@ -8,10 +8,10 @@ require('dotenv').config();
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         try {
-            const folderPath = req.body.folderPath; // Default to root
-            console.log("request file:", req.body);
+            const folderPath = req.body.folderPath || '/'; // Default to root if no folderPath is provided
+            console.log("Request file:", req.body);
             const resolvedFolderPath = resolveFilePath(folderPath); // Resolve path
-            console.log("RESOLVED PATH: ", resolvedFolderPath);
+            console.log("Resolved path:", resolvedFolderPath);
 
             cb(null, resolvedFolderPath);
         } catch (error) {
@@ -19,7 +19,11 @@ const storage = multer.diskStorage({
         }
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Timestamp filenames
+        // Use original filename and avoid overwriting by appending a timestamp if needed
+        const extname = path.extname(file.originalname);
+        const basename = path.basename(file.originalname, extname);
+        const uniqueName = `${basename}${extname}`; // Optional timestamp to avoid collisions
+        cb(null, uniqueName); // Respect the original filename
     },
 });
 
