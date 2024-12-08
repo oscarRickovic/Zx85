@@ -112,8 +112,8 @@ const FileManager = () => {
         setNewName(e.target.value);
     }
 
-    const handleNewFolderCreation = (e) => {
-        fileManagerActionsHandler.handleNewFolderCreation(e);
+    const handleNewFolderCreation = async (e) => {
+        await fileManagerActionsHandler.handleNewFolderCreation(e);
     };
 
     const handleRenaming = (e) => {

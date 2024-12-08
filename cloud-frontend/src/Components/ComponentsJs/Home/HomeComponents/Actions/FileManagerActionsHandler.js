@@ -62,11 +62,21 @@ export default class FileManagerActionsHandler {
         this.Functions.setMenuVisible(false);
     };
 
-    handleNewFolderCreation = (e) => {
+    handleNewFolderCreation = async (e) => {
         if (e.key === "Enter" && this.Variables.newFolderName.trim()) {
             if(this.Variables.newFolderName.length > 20) return;
-            const newFolder = new Folder(this.Variables.newFolderName.trim(), this.Variables.workingDirectory);
-            this.Variables.workingDirectory.addFolder(newFolder);
+            let folderPath = this.Variables.workingDirectory.path + this.Variables.newFolderName.trim();
+            try {
+                const response = await axios.post("http://localhost:5000/api/storage/createFolder", {
+                    folderPath, // Pass folder path as the body
+                });
+                const newFolder = new Folder(this.Variables.newFolderName.trim(), this.Variables.workingDirectory);
+                this.Variables.workingDirectory.addFolder(newFolder);
+                alert("Folder created successfully!");
+            } catch (error) {
+                console.error("Error creating folder:", error.response?.data || error.message);
+                alert("Error creating folder: " + (error.response?.data.message || error.message));
+            }
             this.Functions.setIsCreatingFolder(false);
             this.Functions.setNewFolderName("");
         } else if (e.key === "Escape") {
@@ -95,9 +105,9 @@ export default class FileManagerActionsHandler {
         }
     }
 
-    handleAction = (action) => {
+    handleAction = async (action) => {
         if (action === "Create") {
-            this.handleCreateAction();
+            await this.handleCreateAction();
         }
         if (action === "Delete") {
           this.Variables.selectedItem.delete();

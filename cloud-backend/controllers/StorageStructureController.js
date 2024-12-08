@@ -34,4 +34,32 @@ const getFolderStructure = (req, res) => {
     }
 };
 
-module.exports = { getFolderStructure };
+
+const createFolder = async (req, res) => {
+    const STORAGE_DIR = "/home/oscar/Desktop/Zx85/Storage"
+    const { folderPath } = req.body;
+
+    if (!folderPath) {
+        return res.status(400).json({ message: "Folder path is required." });
+    }
+
+    const sanitizedPath = folderPath.replace(/^\/+/, "");
+    const fullPath = path.join(STORAGE_DIR, path.normalize(sanitizedPath));
+
+    if (!fullPath.startsWith(STORAGE_DIR)) {
+        return res.status(400).json({ message: "Invalid folder path." });
+    }
+
+    try {
+        if (fs.existsSync(fullPath)) {
+            return res.status(400).json({ message: "Folder already exists." });
+        }
+
+        fs.mkdirSync(fullPath, { recursive: true });
+        res.status(201).json({ message: "Folder created successfully.", path: sanitizedPath });
+    } catch (error) {
+        res.status(500).json({ message: "Error creating folder.", error: error.message });
+    }
+};
+
+module.exports = { getFolderStructure, createFolder };
