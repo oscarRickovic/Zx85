@@ -171,11 +171,6 @@ export default class FileManagerActionsHandler {
         const formData = new FormData();
         formData.append('folderPath', this.Variables.workingDirectory.path);
         formData.append('file', selectedFile);  // Append the selected file to the FormData
-
-
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-        }
         
         try {
             this.Functions.setUploadStatus('Uploading...');
@@ -187,6 +182,7 @@ export default class FileManagerActionsHandler {
                 },
             });
 
+            this.Variables.workingDirectory.addFile(new File(selectedFile.name, this.Variables.workingDirectory))
             // If the upload is successful
             this.Functions.setUploadStatus('File uploaded successfully!');
             console.log(response.data);
