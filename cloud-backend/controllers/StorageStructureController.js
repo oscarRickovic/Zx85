@@ -1,9 +1,10 @@
 const fs = require("fs");
 const path = require("path");
+const Statics = require("../database/Statics")
 
 require('dotenv').config();  // Load the .env file
 
-const STORAGE_ROOT = process.env.STORAGE_PATH; 
+
 
 // Function to recursively get folder structure
 const getFolderTree = (directoryPath) => {
@@ -27,7 +28,7 @@ const getFolderTree = (directoryPath) => {
 // Controller to get the folder structure
 const getFolderStructure = (req, res) => {
     try {
-        const folderTree = getFolderTree(STORAGE_ROOT); // Get folder structure
+        const folderTree = getFolderTree(Statics.STORAGE_DIR); // Get folder structure
         res.json(folderTree); // Return the folder structure in JSON format
     } catch (err) {
         res.status(500).json({ error: "Failed to retrieve folder structure" });
@@ -36,7 +37,7 @@ const getFolderStructure = (req, res) => {
 
 
 const createFolder = async (req, res) => {
-    const STORAGE_DIR = path.join(__dirname, "..", "..", "Storage")
+
     const { folderPath } = req.body;
 
     if (!folderPath) {
@@ -44,9 +45,9 @@ const createFolder = async (req, res) => {
     }
 
     const sanitizedPath = folderPath.replace(/^\/+/, "");
-    const fullPath = path.join(STORAGE_DIR, path.normalize(sanitizedPath));
+    const fullPath = path.join(Statics.STORAGE_DIR, path.normalize(sanitizedPath));
 
-    if (!fullPath.startsWith(STORAGE_DIR)) {
+    if (!fullPath.startsWith(Statics.STORAGE_DIR)) {
         return res.status(400).json({ message: "Invalid folder path." });
     }
 
