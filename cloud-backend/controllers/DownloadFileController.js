@@ -1,7 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-
-const STORAGE_DIR = "/home/tay/Desktop/Zx85/Storage";
+const Statics = require ("../database/Statics")
 
 const downloadFile = (req, res) => {
     const { path: relativePath } = req.query;
@@ -15,12 +14,12 @@ const downloadFile = (req, res) => {
     // Remove leading slashes from the relative path
     const sanitizedPath = relativePath.replace(/^\/+/, "");
 
-    const fullPath = path.join(STORAGE_DIR, path.normalize(sanitizedPath));
+    const fullPath = path.join(Statics.STORAGE_DIR, path.normalize(sanitizedPath));
 
     console.log("Resolved Full Path:", fullPath);
 
     // Ensure the full path is within STORAGE_DIR to prevent directory traversal attacks
-    if (!fullPath.startsWith(STORAGE_DIR)) {
+    if (!fullPath.startsWith(Statics.STORAGE_DIR)) {
         return res.status(400).json({ message: "Invalid file path." });
     }
 

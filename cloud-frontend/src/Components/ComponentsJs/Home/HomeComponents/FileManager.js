@@ -112,8 +112,8 @@ const FileManager = () => {
         setNewName(e.target.value);
     }
 
-    const handleNewFolderCreation = (e) => {
-        fileManagerActionsHandler.handleNewFolderCreation(e);
+    const handleNewFolderCreation = async (e) => {
+        await   fileManagerActionsHandler.handleNewFolderCreation(e);
     };
 
     const handleRenaming = (e) => {
@@ -301,7 +301,24 @@ const FileManager = () => {
                         <ul>
                             {isEmptySpace ? (
                                 <>
-                                    <li onClick={() => handleAction("Upload")}>Upload</li>
+                                    <li>
+                                        <label style={{ position: "relative", cursor: "pointer" }}>
+                                            <span>Upload</span>
+                                            <input
+                                                type="file"
+                                                onChange={handleFileUpload}
+                                                style={{
+                                                    position: "absolute",
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    cursor: "pointer",
+                                                    opacity: 0, // Hidden but functional
+                                                }}
+                                            />
+                                        </label>
+                                    </li>
                                     <li onClick={() => handleAction("Create")}>New Folder</li>
                                 </>
                             ) : (
