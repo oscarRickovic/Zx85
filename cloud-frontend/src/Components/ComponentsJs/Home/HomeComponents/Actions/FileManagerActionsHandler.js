@@ -145,7 +145,12 @@ export default class FileManagerActionsHandler {
 
         const formData = new FormData();
         formData.append('file', selectedFile);  // Append the selected file to the FormData
+        formData.append('folderPath', /*this.Variables.workingDirectory.path*/ 'Projects');
 
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+        
         try {
             this.Functions.setUploadStatus('Uploading...');
 
