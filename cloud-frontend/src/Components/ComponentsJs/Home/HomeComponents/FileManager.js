@@ -113,7 +113,7 @@ const FileManager = () => {
     }
 
     const handleNewFolderCreation = async (e) => {
-        await fileManagerActionsHandler.handleNewFolderCreation(e);
+        await   fileManagerActionsHandler.handleNewFolderCreation(e);
     };
 
     const handleRenaming = (e) => {

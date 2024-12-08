@@ -105,12 +105,27 @@ export default class FileManagerActionsHandler {
         }
     }
 
+    handleDeletingOperation = async (selectElement) => {
+        const relativePath = selectElement.path
+        alert(relativePath)
+        try {
+                await axios.post("http://localhost:5000/api/storage/delete", {
+                    relativePath, // Pass folder path as the body
+                });
+                selectElement.delete();
+                alert("DELETED SUCCESSFULLY")
+            } catch (error) {
+                console.error("Error creating folder:", error.response?.data || error.message);
+                alert("Error creating folder: " + (error.response?.data.message || error.message));
+            }
+    }
+
     handleAction = async (action) => {
         if (action === "Create") {
             await this.handleCreateAction();
         }
         if (action === "Delete") {
-          this.Variables.selectedItem.delete();
+            await this.handleDeletingOperation(this.Variables.selectedItem)
         }
         if (action === "Open") {
             const selectedFolder = this.Variables.selectedItem;

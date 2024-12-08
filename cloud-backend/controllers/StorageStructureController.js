@@ -63,4 +63,40 @@ const createFolder = async (req, res) => {
     }
 };
 
-module.exports = { getFolderStructure, createFolder };
+
+const deleteFileOrFolder = async (req, res) => {
+    const { relativePath } = req.body; // Path from the request body
+    
+    if (!relativePath) {
+        return res.status(400).json({ message: "Path is required." });
+    }
+
+    const sanitizedPath = relativePath.replace(/^\/+/, "");
+    const fullPath = path.join(Statics.STORAGE_DIR, path.normalize(sanitizedPath));
+
+    // Ensure the full path is within the storage directory to prevent directory traversal attacks
+    if (!fullPath.startsWith(Statics.STORAGE_DIR)) {
+        return res.status(400).json({ message: "Invalid path." });
+    }
+
+    try {
+        if (fs.existsSync(fullPath)) {
+            if (fs.statSync(fullPath).isDirectory()) {
+                // If it's a directory, delete the folder and its contents
+                fs.rmdirSync(fullPath, { recursive: true });
+                return res.status(200).json({ message: "Folder deleted successfully." });
+            } else {
+                // If it's a file, delete the file
+                fs.unlinkSync(fullPath);
+                return res.status(200).json({ message: "File deleted successfully." });
+            }
+        } else {
+            return res.status(404).json({ message: "Path not found." });
+        }
+    } catch (error) {
+        console.error("Error deleting file/folder:", error);
+        res.status(500).json({ message: "Error deleting the file/folder.", error: error.message });
+    }
+};
+
+module.exports = { getFolderStructure, createFolder, deleteFileOrFolder};
