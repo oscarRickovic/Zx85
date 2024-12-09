@@ -26,7 +26,7 @@ export default class LoginHandler {
             try {
                 user.password = Crypto.hashSHA256(user.password);
                 let encyptedCredentials = Crypto.symetricalEncription(user);
-                const response = await axios.post('http://localhost:5000/api/auth/login', {encyptedCredentials});
+                const response = await axios.post('http://' + process.env.REACT_APP_SERVER_IP + ':' + process.env.REACT_APP_SERVER_PORT + '/api/auth/login', {encyptedCredentials});
                 
                 // If login is successful
                 console.log(response.data.message);

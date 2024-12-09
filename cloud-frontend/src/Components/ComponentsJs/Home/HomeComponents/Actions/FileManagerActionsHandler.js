@@ -15,7 +15,7 @@ export default class FileManagerActionsHandler {
 
     static async fetchFolderStructure() {
         try {
-            const response = await axios.get('http://localhost:5000/api/storage/structure');
+            const response = await axios.get('http://' + process.env.REACT_APP_SERVER_IP + ':' + process.env.REACT_APP_SERVER_PORT + '/api/storage/structure');
             return response.data; // Return the storage structure
         } catch (error) {
             console.error("Error fetching Storage structure:", error);
@@ -67,7 +67,7 @@ export default class FileManagerActionsHandler {
             if(this.Variables.newFolderName.length > 20) return;
             let folderPath = this.Variables.workingDirectory.path + "/" + this.Variables.newFolderName.trim();
             try {
-                const response = await axios.post("http://localhost:5000/api/storage/createFolder", {
+                const response = await axios.post('http://' + process.env.REACT_APP_SERVER_IP + ':' + process.env.REACT_APP_SERVER_PORT + "/api/storage/createFolder", {
                     folderPath, // Pass folder path as the body
                 });
                 const newFolder = new Folder(this.Variables.newFolderName.trim(), this.Variables.workingDirectory);
@@ -109,7 +109,7 @@ export default class FileManagerActionsHandler {
         const relativePath = selectElement.path
         alert(relativePath)
         try {
-                await axios.post("http://localhost:5000/api/storage/delete", {
+                await axios.post('http://' + process.env.REACT_APP_SERVER_IP + ':' + process.env.REACT_APP_SERVER_PORT + "/api/storage/delete", {
                     relativePath, // Pass folder path as the body
                 });
                 selectElement.delete();
@@ -176,7 +176,7 @@ export default class FileManagerActionsHandler {
             this.Functions.setUploadStatus('Uploading...');
 
             // Send the file to the backend using POST request
-            const response = await axios.post('http://localhost:5000/service/upload', formData, {
+            const response = await axios.post('http://' + process.env.REACT_APP_SERVER_IP + ':' + process.env.REACT_APP_SERVER_PORT + '/service/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -206,7 +206,7 @@ export default class FileManagerActionsHandler {
         try {
             console.log("Selected Item Path: ", this.Variables.selectedItem.path);
 
-            const response = await axios.get(`http://localhost:5000/service/download`, {
+            const response = await axios.get('http://' + process.env.REACT_APP_SERVER_IP + ':' + process.env.REACT_APP_SERVER_PORT + `/service/download`, {
                 params: { path: this.Variables.selectedItem.path }, // Send the file path to the backend
                 responseType: 'blob', // Ensure the response is handled as a binary file
             });

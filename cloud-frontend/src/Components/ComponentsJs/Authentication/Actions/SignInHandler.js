@@ -25,7 +25,7 @@ export default class SignInHandler{
                 user.password = Crypto.hashSHA256(user.password);
                 user.repeatedPassword = Crypto.hashSHA256(user.repeatedPassword);
                 let encryptedCredentials = Crypto.symetricalEncription(user);
-                const response = await axios.post('http://localhost:5000/api/auth/register', { encryptedCredentials });
+                const response = await axios.post('http://' + process.env.REACT_APP_SERVER_IP + ':' + process.env.REACT_APP_SERVER_PORT + '/api/auth/register', { encryptedCredentials });
                 functions.navigate(`/validation?email=${user.email}`);
             } catch (error) {
                 let errorMessage = error.response.data.error || "An error occured";

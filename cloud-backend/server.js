@@ -10,7 +10,13 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(cors());  // Allow all origins, or configure specific origins
+app.use(cors(
+    {
+        origin: '*', // Allow all origins (default behavior of app.use(cors()))
+        methods: 'GET,POST,PUT,DELETE', // Allowed HTTP methods
+        allowedHeaders: 'Content-Type,Authorization', // Allowed headers
+    }
+));  // Allow all origins, or configure specific origins
 app.use(express.json()); // Use built-in Express JSON parser
 app.use(express.urlencoded({ extended: true }));
 

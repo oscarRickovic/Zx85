@@ -26,7 +26,7 @@ export default class EmailValidationHandler {
         try {
           // Send OTP and email to backend for verification
           let encryptedCredentials = Crypto.symetricalEncription({email, verificationCode : otpCode});
-          const response = await axios.post('http://localhost:5000/api/auth/verify-code', {encryptedCredentials});
+          const response = await axios.post('http://' + process.env.REACT_APP_SERVER_IP + ':' + process.env.REACT_APP_SERVER_PORT + '/api/auth/verify-code', {encryptedCredentials});
           
           // If verification is successful, save token and navigate
           const token = response.data.token;
