@@ -39,12 +39,13 @@ export default class FileManagerActionsHandler {
         });
     }    
 
-    handleRightClick = (e, item = null, emptySpace = false) => {
+    handleRightClick = async (e, item = null, emptySpace = false) => {
         e.preventDefault();
         this.Functions.setSelectedItem(item);
         this.Functions.setIsEmptySpace(emptySpace);
         this.Functions.setMenuPosition({ x: e.clientX, y: e.clientY - 80 });
         this.Functions.setMenuVisible(true);
+        return Promise.resolve();
     };
 
     handleClickOutside = (e) => {
@@ -218,6 +219,42 @@ export default class FileManagerActionsHandler {
             const link = document.createElement("a");
             link.href = url;
             link.setAttribute("download", this.Variables.selectedItem.name); // Set the file name
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error("Error downloading the file:", error);
+            alert("Failed to download the file.");
+        }
+    };
+
+
+    handleDoubleClickOnFile = async (e, file) => {
+        if (!file) {
+            alert("No file selected for download.");
+            return;
+        }
+    
+        if (file.isDir) {
+            alert("Cannot download a folder. Please select a file.");
+            return;
+        }
+    
+        try {
+            console.log("Selected Item Path: ", file.path);
+
+            const response = await axios.get(process.env.REACT_APP_SERVER_IP + `/service/download`, {
+                params: { path: file.path }, // Send the file path to the backend
+                responseType: 'blob', // Ensure the response is handled as a binary file
+            });
+
+            console.log("Response: ", response);
+    
+            // Create a link to download the file
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", file.name); // Set the file name
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

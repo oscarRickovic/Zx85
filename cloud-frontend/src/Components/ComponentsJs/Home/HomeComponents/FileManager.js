@@ -101,6 +101,11 @@ const FileManager = () => {
         fileManagerActionsHandler.handleRightClick(e, item, emptySpace);
     };
 
+    const handleDoubleClickOnFile = (e, file) => {
+        fileManagerActionsHandler.handleDoubleClickOnFile(e, file);    
+    };
+      
+
     const handleClickOutside = (e) => {
         fileManagerActionsHandler.handleClickOutside(e);
     };
@@ -271,6 +276,7 @@ const FileManager = () => {
                                         selectedItem != null ? (selectedItem.path === subFile.path ? "file-selected" : "file") : "file"
                                     }
                                     onContextMenu={(e) => handleRightClick(e, subFile)}
+                                    onDoubleClick={(e) => handleDoubleClickOnFile(e, subFile)}
                                 >
                                     <div className="file-icon">
                                         <FaFile className="clickFile" />
