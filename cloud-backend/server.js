@@ -21,6 +21,10 @@ app.use(express.json()); // Use built-in Express JSON parser
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.use("/api/hello", (req, res) => {
+    res.json({message : "hello"})
+})
+
 app.use('/api/auth', authRoutes);
 
 app.use("/api/storage", StorageStructureRoute); 

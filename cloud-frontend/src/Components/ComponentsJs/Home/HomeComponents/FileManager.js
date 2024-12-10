@@ -10,6 +10,7 @@ import { MdOutlineCloudUpload } from "react-icons/md";
 import FolderHierarchy from "./FolderHierarchy";
 import { VscNewFolder } from "react-icons/vsc";
 import FileManagerActionsHandler from "./Actions/FileManagerActionsHandler";
+import WaitingHomePage from "./WaitingHomePage";
 
 const FileManager = () => {
     // All useStates variables, setters.
@@ -149,7 +150,9 @@ const FileManager = () => {
 
 
     if (!Root) {
-        return <div>Loading...</div>; // Show loading message until Root is fetched
+        return <div>
+            <WaitingHomePage/>
+        </div>; // Show loading message until Root is fetched
     }
 
     return (
