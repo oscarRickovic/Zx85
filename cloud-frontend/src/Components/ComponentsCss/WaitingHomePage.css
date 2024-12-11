@@ -1,0 +1,23 @@
+.WaitingHomePage {
+    display: flex;
+    height: 65vh; /* Occupies 65% of viewport height */
+    width: 100vw; /* Full width */
+    background-color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader {
+    width: 40px;
+    aspect-ratio: 1;
+    background: #000;
+    animation: l1 1s infinite;
+  }
+  @keyframes l1 {
+    0%   {transform: perspective(150px) rotateX(  0deg)}
+    100% {transform: perspective(150px) rotateX(180deg)}
+  }
