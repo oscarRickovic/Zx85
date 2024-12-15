@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const Statics = require ("../database/Statics")
+const Statics = require ("../Statics/Statics")
 
 const downloadFile = (req, res) => {
     const { path: relativePath } = req.query;

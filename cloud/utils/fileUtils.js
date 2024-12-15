@@ -1,6 +1,6 @@
 const path = require('path');
 require('dotenv').config();
-const Statics = require("../database/Statics")
+const Statics = require("../Statics/Statics")
 // Function to resolve and sanitize file paths
 const resolveFilePath = (relativePath) => {
     const resolvedPath = path.join(Statics.STORAGE_DIR, relativePath);

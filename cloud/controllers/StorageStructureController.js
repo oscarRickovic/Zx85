@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const Statics = require("../database/Statics")
+const Statics = require("../Statics/Statics")
 
 require('dotenv').config();  // Load the .env file
 
