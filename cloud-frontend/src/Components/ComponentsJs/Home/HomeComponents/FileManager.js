@@ -10,6 +10,7 @@ import { MdOutlineCloudUpload } from "react-icons/md";
 import FolderHierarchy from "./FolderHierarchy";
 import { VscNewFolder } from "react-icons/vsc";
 import FileManagerActionsHandler from "./Actions/FileManagerActionsHandler";
+import WaitingHomePage from "./WaitingHomePage";
 
 const FileManager = () => {
     // All useStates variables, setters.
@@ -100,6 +101,11 @@ const FileManager = () => {
         fileManagerActionsHandler.handleRightClick(e, item, emptySpace);
     };
 
+    const handleDoubleClickOnFile = (e, file) => {
+        fileManagerActionsHandler.handleDoubleClickOnFile(e, file);    
+    };
+      
+
     const handleClickOutside = (e) => {
         fileManagerActionsHandler.handleClickOutside(e);
     };
@@ -149,7 +155,9 @@ const FileManager = () => {
 
 
     if (!Root) {
-        return <div>Loading...</div>; // Show loading message until Root is fetched
+        return <div>
+            <WaitingHomePage/>
+        </div>; // Show loading message until Root is fetched
     }
 
     return (
@@ -268,6 +276,7 @@ const FileManager = () => {
                                         selectedItem != null ? (selectedItem.path === subFile.path ? "file-selected" : "file") : "file"
                                     }
                                     onContextMenu={(e) => handleRightClick(e, subFile)}
+                                    onDoubleClick={(e) => handleDoubleClickOnFile(e, subFile)}
                                 >
                                     <div className="file-icon">
                                         <FaFile className="clickFile" />
