@@ -1,5 +1,5 @@
 const express = require('express');
-const sequelize = require('./database/db'); // MySQL connection
+//const sequelize = require('./database/db'); // MySQL connection
 const authRoutes = require('./routes/auth');
 const uploadRoute = require('./routes/upload')
 const fileRoutes = require('./routes/downloadFile')
@@ -34,7 +34,7 @@ app.use('/service', uploadRoute);
 app.use('/service', fileRoutes);
 
 //Database
-sequelize.sync().then(() => console.log('Database synced'));
+// sequelize.sync().then(() => console.log('Database synced'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
