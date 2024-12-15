@@ -1,7 +1,6 @@
 const express = require('express');
-const uploadRoute = require('./routes/upload')
-const fileRoutes = require('./routes/downloadFile')
-const StorageStructureRoute = require('./routes/StorageStructureRoute');
+const sequelize = require('./database/db'); // MySQL connection
+const authRoutes = require('./routes/auth');
 const cors = require('cors');
 
 require('dotenv').config();
@@ -23,14 +22,12 @@ app.use("/api/hello", (req, res) => {
     res.json({message : "hello"})
 })
 
-app.use("/api/storage", StorageStructureRoute); 
+app.use('/api/auth', authRoutes);
 
-app.use('/service', uploadRoute);
-
-app.use('/service', fileRoutes);
+// create routes for /api/services
 
 //Database
-// sequelize.sync().then(() => console.log('Database synced'));
+sequelize.sync().then(() => console.log('Database synced'));
 
-const PORT = process.env.PORT || 7000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

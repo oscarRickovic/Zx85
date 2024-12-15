@@ -1,6 +1,6 @@
 const multer = require('multer');
 const path = require('path');
-const { resolveFilePath } = require('../utils/fileUtils'); // Import the utility function
+const { resolveFilePath } = require('./fileUtils'); // Import the utility function
 
 require('dotenv').config();
 

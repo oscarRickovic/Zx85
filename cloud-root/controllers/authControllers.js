@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const PreUser = require('../models/PreUser');
 const User = require('../models/User');
 const EmailVerification = require('../Helpers/EmailVerification')
-const JwtGenrator = require('../Helpers/JwtGenerator');
+const JwtGenrator = require('../cloud/Helpers/JwtGenerator');
 const Crypto  = require('../Helpers/Crypto');
 
 const JWT_SECRET = process.env.JWT_SECRET;

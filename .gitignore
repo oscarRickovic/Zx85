@@ -39,3 +39,5 @@ coverage/
 # Optional lock files
 package-lock.json
 yarn.lock
+
+cloud/Storage
